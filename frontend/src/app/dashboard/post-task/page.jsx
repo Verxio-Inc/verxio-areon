@@ -7,10 +7,39 @@ import * as Yup from "yup";
 import { uploadFile, setDoc } from "@junobuild/core";
 import { nanoid } from "nanoid";
 import { LoadingButton } from '@mui/lab';
+// import { 
+//   useSimulateContract,
+//   useAccount,
+//   useReadContract,
+//   useContractRead
+//  } from 'wagmi'
+import { 
+  useContractWrite, 
+  usePrepareContractWrite,
+  useWaitForTransaction 
+ } from "wagmi";
+ import {VerxioSubmitTaskABI} from "../../../components/abi/VerxioSubmitTask.json"
+ import { create } from 'ipfs-http-client'
+ import { Buffer } from 'buffer'
+ 
 
+const projectId = "d03c7fa657ad431fb4aee1180ba3de7b"
+const projectSecret = "3d8e59a2318042ab95b23190c03bc58f"
+const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
+
+const client = create({
+  host: 'ipfs.infura.io',
+  port: 5001,
+  protocol: 'https',
+  headers: {
+      authorization: auth,
+  },
+})
+ 
 const Page = () => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(false);
+  const [fileUrl, updateFileUrl] = useState(``)
 
   useEffect(() => {
     const unsubscribe = authSubscribe((newUser) => {
@@ -54,40 +83,42 @@ const Page = () => {
       let url; 
       try {
         // Handle file upload logic
-        if (values.fileDoc !== undefined) {
-          const filename = `${user.key}-${values.fileDoc.name}`;
-          const { downloadUrl } = await uploadFile({
-            collection: "publish-document",
-            data: values.fileDoc,
-            filename,
-          });
-          url = downloadUrl;
-        }
+        // if (values.fileDoc !== undefined) {
+        //   const added = await client.add(values.fileDoc)
+        //   const url = `https://infura-ipfs.io/ipfs/${added.path}`
+        //   updateFileUrl(url)
+        //   console.log("IPFS URI: ", url)
+        // }
 
         // Access the download URL and other form values here
-          console.log("upload successful!...");
-          console.log("Download URL:", url);
-          
+          // console.log("upload successful!...");
+          // console.log("Download URL:", url);
+          const taskID = nanoid()
+          const { config } = usePrepareContractWrite({
+            address: '0xa2a3b38f6088d729a1454bcd2863ce87b9953079',
+            abi: VerxioSubmitTaskABI,
+            functionName: "submitTask",
+            args: [
+              taskID,
+              values.title,
+              values.description,
+              "values.fileDocURL",
+              values.totalPeople,
+              values.amount,
+              values.jobType,
+              values.paymentMethod,
+              values.responsibilities,
+              values.requirements
+             ],
+          });
+          const { data, isLoading, isSuccess, write } = useContractWrite(config);
+              // Call the write function
+          const transaction = write();
 
-        await setDoc({
-          collection: "publish-task",
-          doc: {
-            key: nanoid(),
-            data: {
-              title: values.title,
-              description: values.description,
-              responsibilities: values.responsibilities,
-              requirements: values.requirements,
-              jobType: values.jobType,
-              paymentMethod: values.paymentMethod,
-              totalPeople: values.totalPeople,
-              amount: values.amount,
-              ...(url !== undefined && { url }),
-            },
-          },
-        });
+        // Additional logic after the transaction is submitted
+        console.log("Transaction submitted:", transaction);
 
-        console.log("Task upload successful!...");
+        console.log("Task upload successful!...", data);
 
         // Now you can perform additional submit logic, e.g., send data to the server
       } catch (error) {

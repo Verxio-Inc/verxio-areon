@@ -1,21 +1,21 @@
 import { Chain } from 'wagmi'
 
-export const XRPLDevnet = {
-    id: 1440002,
-    name: 'XRPL EVM Sidechain',
-    network: 'XRPL EVM Sidechain',
+export const AreonTestnet = {
+    id: 462,
+    name: 'Areon Network Testnet',
+    network: 'Areon Network Testnet',
     nativeCurrency: {
       decimals: 18,
-      name: 'XRP',
-      symbol: 'XRP',
+      name: 'TAREA',
+      symbol: 'TAREA',
     },
     rpcUrls: {
-      public: { http: ['https://rpc-evm-sidechain.xrpl.org/'] },
-      default: { http: ['https://rpc-evm-sidechain.xrpl.org/'] },
+      public: { http: ['https://testnet-rpc.areon.network/'] },
+      default: { http: ['https://testnet-rpc.areon.network/'] },
     },
     blockExplorers: {
-      etherscan: { name: 'XRPL', url: 'https://evm-sidechain.xrpl.org/' },
-      default: { name: 'XRPL', url: 'https://evm-sidechain.xrpl.org' },
+      etherscan: { name: 'TAREA', url: 'https://areonscan.com/' },
+      default: { name: 'TAREA', url: 'https://areonscan.com/' },
     },
   
   } as const satisfies Chain
