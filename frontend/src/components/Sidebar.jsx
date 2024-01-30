@@ -4,6 +4,7 @@ import { initJuno } from "@junobuild/core";
 import { authSubscribe } from "@junobuild/core";
 import LoginButton from "./login";
 import LogoutButton from "./logout";
+import Connect from "./connect"
 import { useEffect, useState } from "react";
 import { Logo, SidebarMenuItem } from "./atoms";
 import Image from "next/image";
@@ -57,7 +58,7 @@ const Sidebar = () => {
               // <div></div>
             ))}
           </ul>
-
+              <Connect/>
           {user ? <LogoutButton /> : <LoginButton />}
 
           <button className=" flex items-center  mx-auto w-[80%] gap-3">
