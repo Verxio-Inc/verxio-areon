@@ -1,6 +1,8 @@
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
-export const Connect = () => {
+ const Connect = () => {
   return <ConnectButton showBalance={false} />;
 };
+
+export default Connect
