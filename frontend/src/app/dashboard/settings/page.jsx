@@ -1,61 +1,67 @@
 "use client";
 import { useContext, useEffect, useState,  React, useRef } from "react";
-import { authSubscribe, listDocs } from "@junobuild/core";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Button from "../../../components/Button";
 import Edit from "../../../assets/edit.svg";
 import * as Yup from "yup";
-import { uploadFile, setDoc } from "@junobuild/core";
 import { nanoid } from "nanoid";
 import { LoadingButton } from "@mui/lab";
 import Image from "next/image";
+import { 
+  useContractWrite, 
+  usePrepareContractWrite,
+  useWaitForTransaction,
+  useContractRead
+ } from "wagmi";
+import { VerxioUserProfileABI } from "../../../components/abi/VerxioUserProfile.json";
+import { getAccount } from '@wagmi/core'
 
 const Page = () => {
-  const [user, setUser] = useState();
-  const [userDetailHistory, setuserDetailHistory] = useState([])
-  const [userProfile, setuserProfile] = useState()
+  // const [user, setUser] = useState();
+  // const [userProfile, setuserProfile] = useState()
+  // const [documentURL, setDocumentURL] = useState()
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-
   const fileInputRef = useRef(null);
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [userEmail, setUserEmail] = useState('')
+  const [websiteURL, setWebsiteURL] = useState('')
+  const [userBIO, setUserBIO] = useState('')
 
-  useEffect(() => {
-    const unsubscribe = authSubscribe((newUser) => {
-      setUser(newUser);
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  const user = getAccount();
+  const userAddress = user.address
 
-  const list = async () => {
-    try {
-      const { items } = await listDocs({
-        collection: "userProfile-details",
-      });
-      setuserDetailHistory(items);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  console.log("User Info: ", userAddress)
 
-  useEffect(() => {
-    if (user) {
-      list();
-    }
-  }, [user]);
 
-  const lastUserDetails = userDetailHistory[0];
-  let userProfileDetails;
-// Check if the object is not null or undefined
-  if (typeof lastUserDetails === 'object') {
-        userProfileDetails = {
-        ...lastUserDetails.data,
-        owner: lastUserDetails.owner 
-    };
-    } 
-  
-  console.log("User Profile", userProfileDetails);
+  const { data: userProfile } = useContractRead({
+    address: '0x4838854e5150e4345fb4ae837e9fcca40d51f3fe',
+    abi: VerxioUserProfileABI,
+    functionName: 'getProfile',
+    args: [userAddress]
+  });
+
+  console.log("Showing user profile: ", userProfile)
+
+  const { config } = usePrepareContractWrite({
+    address: '0x4838854e5150e4345fb4ae837e9fcca40d51f3fe',
+    abi: VerxioUserProfileABI,
+    functionName: "updateProfile",
+    args: [
+      firstName,
+      lastName,
+      phoneNumber,
+      userEmail,
+      websiteURL,
+      "profile-testurl.com",
+      "document-testurl.com",
+      userBIO
+     ],
+  });
+
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -102,50 +108,21 @@ const Page = () => {
       console.log("Image Profile: ", selectedImage)
       console.log("Form values:", values);
       console.log("Uploading Files...");
-      let url; 
-      let ImageUrl;
+
+      setFirstName(values.firstName),
+      setLastName(values.lastName),
+      setUserBIO(values.bio),
+      setUserEmail(values.email),
+      setPhoneNumber(values.phoneNumber),
+      setWebsiteURL(values.website)
       try {
-        // Handle file upload logic
-        if (values.fileDoc !== undefined) {
-          const filename = `${user.key}-${values.fileDoc.name}`;
-          const { downloadUrl } = await uploadFile({
-            collection: "userProfile-document",
-            data: values.fileDoc,
-            filename,
-          });
-          url = downloadUrl;
-        }
 
-        if (profileImageDoc !== undefined) {
-          const filename = `${user.key}-${profileImageDoc.name}`;
-          const { downloadUrl } = await uploadFile({
-            collection: "userProfile-photo",
-            data: profileImageDoc,
-            filename,
-          });
-          ImageUrl = downloadUrl;
-        }
+        const transaction = write();
+      // Additional logic after the transaction is submitted
+      console.log("Transaction submitted:", transaction);
 
-        // Access the download URL and other form values here
-          console.log("Stored on the Juno Storage...");
-          console.log("Download URL:", url);
-
-        await setDoc({
-          collection: "userProfile-details",
-          doc: {
-            key: nanoid(),
-            data: {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            bio: values.bio,
-            email: values.email,
-            phoneNumber: values.phoneNumber,
-            website: values.website,
-            fileDoc: url,
-            profileImageDoc: ImageUrl
-            },
-          },
-        });
+      console.log("Task upload successful!...", data);
+        // if (values.fileDoc !== undefined) {}
 
         console.log("Profile upload successful!...");
 
@@ -155,8 +132,6 @@ const Page = () => {
       }
     }
   };
-
-
 
   return (
     <>
