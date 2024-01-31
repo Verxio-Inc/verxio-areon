@@ -14,8 +14,10 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 // import { polygonZkEvm, polygonZkEvmTestnet } from "wagmi/chains";
 import { AreonTestnet } from "../app/Chain";
+import { ThirdwebProvider } from '@thirdweb-dev/react';
 
 const projectId = "274de4271228fdd69013c56274f0e688";
+const clientId = "f5888353ab056968602a49dda7537ef3";
 const { chains, publicClient } = configureChains(
   [AreonTestnet],
   [publicProvider()]
@@ -50,20 +52,25 @@ const wagmiConfig = createConfig({
 });
 
 const WagmiProviders = ({children})=> {
-return (
+return (       
   <WagmiConfig config={wagmiConfig}>
-    <RainbowKitProvider
-      theme={lightTheme({
-        accentColor: "#1570ef",
-        accentColorForeground: "white",
-        borderRadius: "small",
-        fontStack: "system",
-        overlayBlur: "small",
-      })}
-      chains={chains}
-    >
-        {children}
-    </RainbowKitProvider>
+      {/* <ThirdwebProvider
+        activeChain={AreonTestnet}
+        clientId={clientId}> */}
+          <RainbowKitProvider
+            theme={lightTheme({
+              accentColor: "#1570ef",
+              accentColorForeground: "white",
+              borderRadius: "small",
+              fontStack: "system",
+              overlayBlur: "small",
+            })}
+            chains={chains}
+          >
+                {children}
+              
+          </RainbowKitProvider>
+      {/* </ThirdwebProvider> */}
   </WagmiConfig>
 );
 }

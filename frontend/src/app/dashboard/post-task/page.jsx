@@ -18,23 +18,15 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction 
  } from "wagmi";
- import {VerxioSubmitTaskABI} from "../../../components/abi/VerxioSubmitTask.json"
- import { create } from 'ipfs-http-client'
- import { Buffer } from 'buffer'
- 
+ import VerxioSubmitTaskABI from "../../../components/abi/VerxioSubmitTask.json";
+ import { ThirdwebStorage } from "@thirdweb-dev/storage";
 
-const projectId = "d03c7fa657ad431fb4aee1180ba3de7b"
-const projectSecret = "3d8e59a2318042ab95b23190c03bc58f"
-const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
+// First, instantiate the thirdweb IPFS storage
+// const storage = new ThirdwebStorage({
+//   secretKey: "X11UF6-tiUbfrEEXO5Ilcd-Ywt8YNIF68b65QHxxxSSbMOD2YWF7OlOCRc1n_SAYApBAd8AQpVmhhzA2WObbVw", // You can get one from dashboard settings
+// });
 
-const client = create({
-  host: 'ipfs.infura.io',
-  port: 5001,
-  protocol: 'https',
-  headers: {
-      authorization: auth,
-  },
-})
+
  
 const Page = () => {
   const [user, setUser] = useState();
@@ -80,19 +72,23 @@ const Page = () => {
   const submitValue = async (values) => {
     {
       console.log("Form values:", values);
-      let url; 
+      let fileURL; 
       try {
         // Handle file upload logic
         // if (values.fileDoc !== undefined) {
-        //   const added = await client.add(values.fileDoc)
-        //   const url = `https://infura-ipfs.io/ipfs/${added.path}`
-        //   updateFileUrl(url)
-        //   console.log("IPFS URI: ", url)
+        //   // const added = await client.add(values.fileDoc)
+        //   // const url = `https://infura-ipfs.io/ipfs/${added.path}`
+        //   // updateFileUrl(url)
+        //   // console.log("IPFS URI: ", url)
+
+        //   // Here we get the IPFS URI of where our metadata has been uploaded
+        //     const uri = await storage.upload(values.fileDoc);
+        //     console.info(uri);
+        //     fileURL = await storage.resolveScheme(uri);
+        //     console.info(fileURL);
+        //     console.log("upload successful!...");
         // }
 
-        // Access the download URL and other form values here
-          // console.log("upload successful!...");
-          // console.log("Download URL:", url);
           const taskID = nanoid()
           const { config } = usePrepareContractWrite({
             address: '0xa2a3b38f6088d729a1454bcd2863ce87b9953079',
@@ -102,7 +98,7 @@ const Page = () => {
               taskID,
               values.title,
               values.description,
-              "values.fileDocURL",
+              fileURL,
               values.totalPeople,
               values.amount,
               values.jobType,
