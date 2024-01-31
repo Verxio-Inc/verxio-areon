@@ -272,7 +272,7 @@ const Page = () => {
                   type="submit"
                   name="Update Profile"
                   className="mt-8 w-full "
-                  // isLoading={true}
+                  isLoading={true}
                   onClick={() => {
                     if (isValid && dirty) {
                       // console.log(values);
