@@ -13,6 +13,7 @@ const Button = ({
   name,
   onClick,
   icon,
+  isLoading,
   type,
   ...props
 }) => {
@@ -52,7 +53,7 @@ const Button = ({
       )}
       onClick={onClick}
     >
-      {name}
+      {isLoading ? "loading..." : name}
       {icon && <Image src={icon} className="w-4" alt="icon" />}
     </button>
   );

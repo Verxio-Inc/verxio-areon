@@ -1,20 +1,25 @@
 "use client";
-import { useContext, useEffect, useState,  React, useRef } from "react";
+import { useContext, useEffect, useState, React, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Button from "../../../components/Button";
 import Edit from "../../../assets/edit.svg";
 import * as Yup from "yup";
 import { nanoid } from "nanoid";
 import { LoadingButton } from "@mui/lab";
+import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
-import { 
-  useContractWrite, 
+import {
+  useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
-  useContractRead
- } from "wagmi";
+  useContractRead,
+} from "wagmi";
 import { VerxioUserProfileABI } from "../../../components/abi/VerxioUserProfile.json";
-import { getAccount } from '@wagmi/core'
+import { getAccount } from "@wagmi/core";
+import { root } from "../../../../store";
+import { setUserProfile } from "../../../../slices/jobSlice";
+import { useNav } from "../../../context/nav_context";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   // const [user, setUser] = useState();
@@ -23,30 +28,50 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [userEmail, setUserEmail] = useState('')
-  const [websiteURL, setWebsiteURL] = useState('')
-  const [userBIO, setUserBIO] = useState('')
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [websiteURL, setWebsiteURL] = useState("");
+  const [userBIO, setUserBIO] = useState("");
+
+  const dispatch = useDispatch();
+  const router = useRouter
+
+
+  const userProfile2 = useSelector(
+    (state) => state.persistedReducer.jobValues.userProfile
+  );
+
+  const {userProfile3, setUserProfile3} = useNav()
 
   const user = getAccount();
-  const userAddress = user.address
+  const userAddress = user.address;
 
-  console.log("User Info: ", userAddress)
-
+  console.log("User Info: ", userAddress);
 
   const { data: userProfile } = useContractRead({
-    address: '0x4838854e5150e4345fb4ae837e9fcca40d51f3fe',
+    address: "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe",
     abi: VerxioUserProfileABI,
-    functionName: 'getProfile',
-    args: [userAddress]
+    functionName: "getProfile",
+    args: [userAddress],
   });
 
-  console.log("Showing user profile: ", userProfile)
+  useEffect(() => {
+    dispatch(setUserProfile(userProfile));
+    setUserProfile3(userProfile2)
+  }, []);
+
+  // use userProfile3 if dispatch own is confusing you, if it works, i will change it to the dispatch own.. cause it will be important..
+
+
+  // console.log("Showing user profile: ", userProfile);
+  // console.log("Showing user profile2: ", userProfile2);// this is dispatch own,
+    
+  console.log("Showing user profile3: ", userProfile3);// this is useNav own....
 
   const { config } = usePrepareContractWrite({
-    address: '0x4838854e5150e4345fb4ae837e9fcca40d51f3fe',
+    address: "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe",
     abi: VerxioUserProfileABI,
     functionName: "updateProfile",
     args: [
@@ -57,8 +82,8 @@ const Page = () => {
       websiteURL,
       "profile-testurl.com",
       "document-testurl.com",
-      userBIO
-     ],
+      userBIO,
+    ],
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
@@ -104,24 +129,23 @@ const Page = () => {
   });
 
   const submitValue = async (values) => {
-      {
-      console.log("Image Profile: ", selectedImage)
+    {
+      console.log("Image Profile: ", selectedImage);
       console.log("Form values:", values);
       console.log("Uploading Files...");
 
       setFirstName(values.firstName),
-      setLastName(values.lastName),
-      setUserBIO(values.bio),
-      setUserEmail(values.email),
-      setPhoneNumber(values.phoneNumber),
-      setWebsiteURL(values.website)
+        setLastName(values.lastName),
+        setUserBIO(values.bio),
+        setUserEmail(values.email),
+        setPhoneNumber(values.phoneNumber),
+        setWebsiteURL(values.website);
       try {
-
         const transaction = write();
-      // Additional logic after the transaction is submitted
-      console.log("Transaction submitted:", transaction);
+        // Additional logic after the transaction is submitted
+        console.log("Transaction submitted:", transaction);
 
-      console.log("Task upload successful!...", data);
+        console.log("Task upload successful!...", data);
         // if (values.fileDoc !== undefined) {}
 
         console.log("Profile upload successful!...");
@@ -248,11 +272,15 @@ const Page = () => {
                   type="submit"
                   name="Update Profile"
                   className="mt-8 w-full "
+                  // isLoading={true}
                   onClick={() => {
                     if (isValid && dirty) {
                       // console.log(values);
                       submitValue(values);
+                      // router.push('/dashboared/earn') 
+                      //condition for above, if successful then router.push
                     }
+
                   }}
                 />
                 {/* <LoadingButton
