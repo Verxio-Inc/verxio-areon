@@ -10,6 +10,7 @@ export const NavProvider = ({ children }) => {
   const [user, setUser] = useState('');
   const [userProfile3, setUserProfile3] = useState('');
   const [jobDetails, setJobDetails] = useState({});
+  const [userProfileDetail, setUserProfileDetail] = useState({});
 
 
 
@@ -30,7 +31,7 @@ export const NavProvider = ({ children }) => {
         user,
         setUser,
         jobDetails,
-        setJobDetails,
+        setJobDetails, userProfileDetail, setUserProfileDetail,
         userProfile3,
         setUserProfile3,
       }}

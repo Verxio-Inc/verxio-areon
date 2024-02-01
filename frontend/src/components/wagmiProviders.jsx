@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import "@rainbow-me/rainbowkit/styles.css";
 import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
@@ -51,28 +51,27 @@ const wagmiConfig = createConfig({
   publicClient,
 });
 
-const WagmiProviders = ({children})=> {
-return (       
-  <WagmiConfig config={wagmiConfig}>
+const WagmiProviders = ({ children }) => {
+  return (
+    <WagmiConfig config={wagmiConfig}>
       {/* <ThirdwebProvider
         activeChain={AreonTestnet}
         clientId={clientId}> */}
-          <RainbowKitProvider
-            theme={lightTheme({
-              accentColor: "#1570ef",
-              accentColorForeground: "white",
-              borderRadius: "small",
-              fontStack: "system",
-              overlayBlur: "small",
-            })}
-            chains={chains}
-          >
-                {children}
-              
-          </RainbowKitProvider>
+      <RainbowKitProvider
+        theme={lightTheme({
+          accentColor: "#1570ef",
+          accentColorForeground: "white",
+          borderRadius: "small",
+          fontStack: "system",
+          overlayBlur: "small",
+        })}
+        chains={chains}
+      >
+        {children}
+      </RainbowKitProvider>
       {/* </ThirdwebProvider> */}
-  </WagmiConfig>
-);
-}
+    </WagmiConfig>
+  );
+};
 
-export default WagmiProviders
+export default WagmiProviders;

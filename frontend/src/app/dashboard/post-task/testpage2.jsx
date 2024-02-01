@@ -26,45 +26,68 @@ const Page = () => {
 
   const taskID = nanoid();
 
-  const { config } = usePrepareContractWrite({
-    address: "0xa2a3b38f6088d729a1454bcd2863ce87b9953079",
-    abi: VerxioSubmitTaskABI,
-    functionName: "submitTask",
-    args: [
-      taskID,
-      title,
-      description,
-      "fileDoc-url.com",
-      totalPeople,
-      amount,
-      jobType,
-      paymentMethod,
-      responsibilities,
-      requirements,
-    ],
-  });
+  // const { config } = usePrepareContractWrite({
+  //   address: "0xa2a3b38f6088d729a1454bcd2863ce87b9953079",
+  //   abi: VerxioSubmitTaskABI,
+  //   functionName: "submitTask",
+  //   args: [
+  //     taskID,
+  //     title,
+  //     description,
+  //     "fileDoc-url.com",
+  //     totalPeople,
+  //     amount,
+  //     jobType,
+  //     paymentMethod,
+  //     responsibilities,
+  //     requirements,
+  //   ],
+  // });
 
 
-  const {
-    data: submitTaskData,
-    isLoading: isSubmittingTask,
-    isSuccess: isTaskSubmitted,
-    write: submitTaskWrite,
-    isError: isSubmittingTaskError,
-  } = useContractWrite(config);
+  // const {
+  //   data: submitTaskData,
+  //   isLoading: isSubmittingTask,
+  //   isSuccess: isTaskSubmitted,
+  //   write: submitTaskWrite,
+  //   isError: isSubmittingTaskError,
+  // } = useContractWrite(config);
 
+  // // Get Task Integration
+
+  // const {
+  //   data: getTaskData,
+  //   isError: isGettingProfileError,
+  //   isLoading: isGettingTask,
+  // } = useContractRead({
+  //   address: "0xa2a3b38f6088d729a1454bcd2863ce87b9953079",
+  //   abi: VerxioSubmitTaskABI,
+  //   functionName: "getTask",
+  //   args: [taskID],
+  //   watch: true,
+
+  //   onSuccess(data) {
+  //     console.log("Success: TaskData", getTaskData);
+  //   },
+  //   onError(error) {
+  //     console.log("Error", error);
+  //     console.log("Getting Tasking Error", isGettingProfileError);
+  //   },
+  // });
 
   const handleSubmitTask = async (e) => {
     e.preventDefault();
-  
-    try {
-      const transaction = submitTaskWrite(); 
-      console.log("Transaction submitted:", transaction);
-      console.log("Task upload successful!...", submitTaskData);
-  
-      // Now you can perform additional submit logic, e.g., send data to the server
-    } catch (error) {
-      console.error("File Error:", error);
+    {
+      let fileURL;
+      try {
+        const transaction = submitTaskWrite();
+        console.log("Transaction submitted:", transaction);
+        console.log("Task upload successful!...", submitTaskData);
+
+        // Now you can perform additional submit logic, e.g., send data to the server
+      } catch (error) {
+        console.error("File Error:", error);
+      }
     }
   };
 
