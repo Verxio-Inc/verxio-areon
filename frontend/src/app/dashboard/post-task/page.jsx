@@ -1,125 +1,70 @@
 "use client";
 import { useEffect, useState } from "react";
-import { authSubscribe } from "@junobuild/core";
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import Button from "../../../components/Button";
-import * as Yup from "yup";
-import { uploadFile, setDoc } from "@junobuild/core";
 import { nanoid } from "nanoid";
-import { LoadingButton } from '@mui/lab';
-// import { 
-//   useSimulateContract,
-//   useAccount,
-//   useReadContract,
-//   useContractRead
-//  } from 'wagmi'
-import { 
-  useContractWrite, 
+import {
+  useContractWrite,
   usePrepareContractWrite,
-  useWaitForTransaction 
- } from "wagmi";
- import VerxioSubmitTaskABI from "../../../components/abi/VerxioSubmitTask.json";
- import { ThirdwebStorage } from "@thirdweb-dev/storage";
+  useContractRead,
+} from "wagmi";
+import { VerxioSubmitTaskABI } from "../../../components/abi/VerxioSubmitTask.json";
 
-// First, instantiate the thirdweb IPFS storage
-// const storage = new ThirdwebStorage({
-//   secretKey: "X11UF6-tiUbfrEEXO5Ilcd-Ywt8YNIF68b65QHxxxSSbMOD2YWF7OlOCRc1n_SAYApBAd8AQpVmhhzA2WObbVw", // You can get one from dashboard settings
-// });
-
-
- 
 const Page = () => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(false);
-  const [fileUrl, updateFileUrl] = useState(``)
+  const [fileUrl, updateFileUrl] = useState(``);
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
+  const [responsibilities, setResponsibilities] = useState();
+  const [requirements, setRequirements] = useState();
+  const [jobType, setJobType] = useState();
+  const [paymentMethod, setPaymentMethod] = useState();
+  const [totalPeople, setTotalPeople] = useState();
+  const [amount, setAmount] = useState();
+  const [fileDoc, setFileDoc] = useState();
 
-  useEffect(() => {
-    const unsubscribe = authSubscribe((newUser) => {
-      setUser(newUser);
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
-  const initialValues = {
-    title: "",
-    description: "",
-    responsibilities: "",
-    requirements: "",
-    jobType: "",
-    paymentMethod: "",
-    totalPeople: "",
-    amount: "",
-    fileDoc: "",
-  };
+  const taskID = nanoid();
 
-  const validationchema = Yup.object().shape({
-    title: Yup.string().required("Title is required"),
-    description: Yup.string().required("Description is required"),
-    requirements: Yup.string().required("Requirement is required"),
-    jobType: Yup.string().required("Job type is required"),
-    paymentMethod: Yup.string().required("Please select payment method"),
-    totalPeople: Yup.number("value must be a number").required(
-      "Please input amount"
-    ),
-    amount: Yup.number("value must be a number").required(
-      "Please input amount"
-    ),
-    fileDoc: Yup.string().required("Please upload necessary doc"),
+  const { config } = usePrepareContractWrite({
+    address: "0xa2a3b38f6088d729a1454bcd2863ce87b9953079",
+    abi: VerxioSubmitTaskABI,
+    functionName: "submitTask",
+    args: [
+      taskID,
+      title,
+      description,
+      "fileDoc-url.com",
+      totalPeople,
+      amount,
+      jobType,
+      paymentMethod,
+      responsibilities,
+      requirements,
+    ],
   });
 
-  const submitValue = async (values) => {
-    {
-      console.log("Form values:", values);
-      let fileURL; 
-      try {
-        // Handle file upload logic
-        // if (values.fileDoc !== undefined) {
-        //   // const added = await client.add(values.fileDoc)
-        //   // const url = `https://infura-ipfs.io/ipfs/${added.path}`
-        //   // updateFileUrl(url)
-        //   // console.log("IPFS URI: ", url)
 
-        //   // Here we get the IPFS URI of where our metadata has been uploaded
-        //     const uri = await storage.upload(values.fileDoc);
-        //     console.info(uri);
-        //     fileURL = await storage.resolveScheme(uri);
-        //     console.info(fileURL);
-        //     console.log("upload successful!...");
-        // }
+  const {
+    data: submitTaskData,
+    isLoading: isSubmittingTask,
+    isSuccess: isTaskSubmitted,
+    write: submitTaskWrite,
+    isError: isSubmittingTaskError,
+  } = useContractWrite(config);
 
-          const taskID = nanoid()
-          const { config } = usePrepareContractWrite({
-            address: '0xa2a3b38f6088d729a1454bcd2863ce87b9953079',
-            abi: VerxioSubmitTaskABI,
-            functionName: "submitTask",
-            args: [
-              taskID,
-              values.title,
-              values.description,
-              fileURL,
-              values.totalPeople,
-              values.amount,
-              values.jobType,
-              values.paymentMethod,
-              values.responsibilities,
-              values.requirements
-             ],
-          });
-          const { data, isLoading, isSuccess, write } = useContractWrite(config);
-              // Call the write function
-          const transaction = write();
 
-        // Additional logic after the transaction is submitted
-        console.log("Transaction submitted:", transaction);
-
-        console.log("Task upload successful!...", data);
-
-        // Now you can perform additional submit logic, e.g., send data to the server
-      } catch (error) {
-        console.error("File Error:", error);
-      }
+  const handleSubmitTask = async (e) => {
+    e.preventDefault();
+  
+    try {
+      const transaction = submitTaskWrite(); 
+      console.log("Transaction submitted:", transaction);
+      console.log("Task upload successful!...", submitTaskData);
+  
+      // Now you can perform additional submit logic, e.g., send data to the server
+    } catch (error) {
+      console.error("File Error:", error);
     }
   };
 
@@ -132,149 +77,153 @@ const Page = () => {
         </span>{" "}
         do you have in mind today?
       </div>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={() => {}}
-        validationSchema={validationchema}
-      >
-        {({ isValid, handleSubmit, values, dirty, setFieldValue }) => (
-          <Form className="mt-6 flex flex-col gap-5 w-[80%]">
-            <div className="flex flex-col gap-3 text-16 ">
-              <label htmlFor="title">Enter Task Title</label>
-              <Field
-                name="title"
-                className="border outline-none rounded-[4px] border-black p-2"
-              />
-              <ErrorMessage name="title" component={Error} />
-            </div>
 
-            <div className="flex flex-col gap-3 text-16 ">
-              <label htmlFor="description">Enter Task Description</label>
-              <Field
-                name="description"
-                className="border outline-none rounded-[4px] border-black p-2"
-              />
-              <ErrorMessage name="description" component={Error} />
-            </div>
+      <form action="" onSubmit={handleSubmitTask}>
+        <div className="flex flex-col gap-3 text-16 ">
+          <label htmlFor="title">Enter Task Title</label>
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            type="text"
+            name="title"
+            className="border outline-none rounded-[4px] border-black p-2"
+          />
+        </div>
 
-            <div className="flex flex-col gap-3 text-16 ">
-              <label htmlFor="responsibilities">
-                Enter Task Responsibilities
-              </label>
-              <Field
-                name="responsibilities"
-                as="textarea"
-                className="border outline-none rounded-[4px] border-black p-2 max-h-[90px]"
-              />
-            </div>
+        <div className="flex flex-col gap-3 text-16 ">
+          <label htmlFor="description">Enter Task Description</label>
 
-            <div className="flex flex-col gap-3 text-16 ">
-              <label htmlFor="requirements">Enter Task Requirements</label>
-              <Field
-                as="textarea"
-                name="requirements"
-                className="border outline-none rounded-[4px] border-black p-2 max-h-[90px]"
-              />
-              <ErrorMessage name="requirements" component={Error} />
-            </div>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            id=""
+            cols="30"
+            rows="10"
+            name="description"
+            className="border outline-none rounded-[4px] border-black p-2"
+          ></textarea>
+        </div>
 
-            <div className="flex flex-col gap-3 text-16 ">
-              <label htmlFor="jobType">Task Type</label>
-              <Field
-                name="jobType"
-                as="select"
-                className="border outline-none rounded-[4px] border-black p-2"
-              >
-                <option value="">select task type</option>
-                <option value="quest">Quest</option>
-                <option value="bounty">Bounty</option>
-                <option value="contract">Contract</option>
-                <option value="fulltime">Full Time</option>
-              </Field>
-              <ErrorMessage name="jobType" component={Error} />
-            </div>
+        <div className="flex flex-col gap-3 text-16 ">
+          <label htmlFor="responsibilities">Enter Task Responsibilities</label>
 
-            <div className="flex flex-col gap-3 text-16 ">
-              <label htmlFor="paymentMethod">Payment Token</label>
-              <Field
-                name="paymentMethod"
-                as="select"
-                className="border outline-none rounded-[4px] border-black p-2"
-              >
-                <option value="">select payment token eg. ICP</option>
-                <option value="icp">ICP</option>
-                <option value="etherum">Ethereum</option>
-                <option value="solana">Solana</option>
-              </Field>
-              <ErrorMessage name="paymentMethod" component={Error} />
-            </div>
+          <textarea
+            value={responsibilities}
+            onChange={(e) => setResponsibilities(e.target.value)}
+            id=""
+            cols="30"
+            rows="10"
+            name="responsibilities"
+            className="border outline-none rounded-[4px] border-black p-2 max-h-[90px]"
+          ></textarea>
+        </div>
 
-            <div className="flex flex-col gap-3 text-16 ">
-              <label htmlFor="totalPeople">
-                How many people are required for the task?
-              </label>
-              <Field
-                name="totalPeople"
-                className="border outline-none rounded-[4px] border-black p-2"
-              />
-              <ErrorMessage name="totalPeople" component={Error} />
-            </div>
+        <div className="flex flex-col gap-3 text-16 ">
+          <label htmlFor="requirements">Enter Task Requirements</label>
 
-            <div className="flex flex-col gap-3 text-16 ">
-              <label htmlFor="amount">Enter payment amount</label>
-              <Field
-                name="amount"
-                className="border outline-none rounded-[4px] border-black p-2"
-              />
-              <ErrorMessage name="amount" component={Error} />
-            </div>
-            <div className="flex flex-col gap-3 text-16 ">
-              <label htmlFor="fileDoc">Upload file (doc, pdf, png, jpg, etc.)</label>
-              <input 
-              name="fileDoc"
-              className="border outline-none rounded-[4px] border-black p-2"
-              type="file"
-              onChange={(event) => setFieldValue("fileDoc", event.currentTarget.files[0])}
-              />
-              <ErrorMessage name="fileDoc" component={Error} />
-            </div>
-            <div>
-              <Button
-                type="submit"
-                name="Submit"
-                className="mt-8 w-full "
-                onClick={() => {
-                  if (isValid && dirty) {
-                    // console.log(values);
-                    submitValue(values);
-                  }
-                }}
-              />
-              {/* <LoadingButton
-                type="submit"
-                variant="contained"
-                // color="primary"
-                className="mt-8 w-full"
-                loading={loading}
-                onClick={() => {
-                  if (isValid && dirty) {
-                    submitValue(values);
-                    setLoading(true);
-                  }
-                }}
-              >
-                Submit
-              </LoadingButton> */}
-            </div>
-          </Form>
-        )}
-      </Formik>
+          <textarea
+            value={requirements}
+            onChange={(e) => setRequirements(e.target.value)}
+            id=""
+            cols="30"
+            rows="10"
+            name="requirements"
+            className="border outline-none rounded-[4px] border-black p-2 max-h-[90px]"
+          ></textarea>
+        </div>
+
+        <div className="flex flex-col gap-3 text-16 ">
+          <label htmlFor="jobType">Task Type</label>
+
+          <select
+            value={jobType}
+            onChange={(e) => setJobType(e.target.value)}
+            id="jobType"
+            name="jobType"
+            className="border outline-none rounded-[4px] border-black p-2"
+          >
+            <option value="">select task type</option>
+            <option value="quest">Quest</option>
+            <option value="bounty">Bounty</option>
+            <option value="contract">Contract</option>
+            <option value="fulltime">Full Time</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-3 text-16 ">
+          <label htmlFor="paymentMethod">Payment Token</label>
+
+          <select
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+            id=""
+            name="paymentMethod"
+            className="border outline-none rounded-[4px] border-black p-2"
+          >
+            <option value="">select payment token eg. ICP</option>
+            <option value="icp">ICP</option>
+            <option value="etherum">Ethereum</option>
+            <option value="solana">Solana</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-3 text-16 ">
+          <label htmlFor="totalPeople">
+            How many people are required for the task?
+          </label>
+
+          <input
+            value={totalPeople}
+            onChange={(e) => setTotalPeople(e.target.value)}
+            type="number"
+            name="totalPeople"
+            className="border outline-none rounded-[4px] border-black p-2"
+          />
+        </div>
+
+        <div className="flex flex-col gap-3 text-16 ">
+          <label htmlFor="amount">Enter payment amount</label>
+
+          <input
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            type="number"
+            id=""
+            name="amount"
+            className="border outline-none rounded-[4px] border-black p-2"
+          />
+        </div>
+
+        <div className="flex flex-col gap-3 text-16 ">
+          <label htmlFor="fileDoc">
+            Upload file (doc, pdf, png, jpg, etc.)
+          </label>
+          <input
+            value={fileDoc}
+            onChange={(e) => setFileDoc(e.target.value)}
+            name="fileDoc"
+            className="border outline-none rounded-[4px] border-black p-2"
+            type="file"
+          />
+        </div>
+
+        <div>
+          <Button type="submit" name="Submit Task" className="mt-8 w-full " />
+        </div>
+
+        <article className="mt-4 text-sm">
+          {isSubmittingTask && <p> Submitting Task...</p>}
+
+          {isSubmittingTaskError && <p>There is an Error in Submitting Task</p>}
+
+          {isTaskSubmitted && isGettingTask && (
+            <p>Task Submitted: Getting Task Data</p>
+          )}
+        </article>
+      </form>
     </div>
   );
 };
 
 export default Page;
 
-const Error = ({ children }) => {
-  return <p className="text-red-400  text-[12px] mt-[-5px]">{children}</p>;
-};
