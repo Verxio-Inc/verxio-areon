@@ -64,7 +64,7 @@ const Page = () => {
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
   const handleImageChange = (event) => {
-    const file = event.target.files[0];
+    const file = event.currentTarget.files[0];
 
     if (file) {
       const reader = new FileReader();
@@ -108,7 +108,7 @@ const Page = () => {
       console.log("Image Profile: ", selectedImage)
       console.log("Form values:", values);
       console.log("Uploading Files...");
-
+      // if (values.fileDoc !== undefined) {}
       setFirstName(values.firstName),
       setLastName(values.lastName),
       setUserBIO(values.bio),
@@ -122,9 +122,7 @@ const Page = () => {
       console.log("Transaction submitted:", transaction);
 
       console.log("Task upload successful!...", data);
-        // if (values.fileDoc !== undefined) {}
-
-        console.log("Profile upload successful!...");
+       
 
         // Now you can perform additional submit logic, e.g., send data to the server
       } catch (error) {
