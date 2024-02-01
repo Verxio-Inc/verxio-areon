@@ -1,9 +1,8 @@
 "use client";
 import { useState, React, useRef } from "react";
-
+import { useNav } from "../../../context/nav_context";
 import Button from "../../../components/Button";
 import Edit from "../../../assets/edit.svg";
-
 import Image from "next/image";
 import {
   useContractWrite,
@@ -27,8 +26,7 @@ const Page = () => {
 
   const user = getAccount();
   const userAddress = user.address;
-
-  console.log("User Info: ", userAddress);
+  const { userProfileDetail, setUserProfileDetail } = useNav();
 
   // Gets UserProfile
   const { data: userProfile } = useContractRead({
@@ -45,7 +43,8 @@ const Page = () => {
     },
   });
 
-  console.log("Showing user profile: ", userProfile);
+  setUserProfileDetail(userProfile)
+  console.log("Showing user profile: ", userProfileDetail);
 
   // Updates UserProfile
   const { config } = usePrepareContractWrite({
@@ -73,7 +72,7 @@ const Page = () => {
   } = useContractWrite(config);
 
   const handleImageChange = (event) => {
-    const file = event.currentTarget.files[0];
+    const file = event.target.files[0];
 
     if (file) {
       const reader = new FileReader();
@@ -97,13 +96,7 @@ const Page = () => {
       console.log("Image Profile: ", selectedImage);
       // console.log("Form values:", values);
       console.log("Uploading Files...");
-      // if (values.fileDoc !== undefined) {}
-      setFirstName(values.firstName),
-      setLastName(values.lastName),
-      setUserBIO(values.bio),
-      setUserEmail(values.email),
-      setPhoneNumber(values.phoneNumber),
-      setWebsiteURL(values.website)
+
       try {
         const transaction = updateProfileWrite();
         // Additional logic after the transaction is submitted
