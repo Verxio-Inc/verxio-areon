@@ -13,6 +13,7 @@ import {
 import { VerxioUserProfileABI } from "../../../components/abi/VerxioUserProfile.json";
 import { getAccount } from "@wagmi/core";
 
+
 const Page = () => {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -24,6 +25,7 @@ const Page = () => {
   const [websiteURL, setWebsiteURL] = useState("");
   const [userBIO, setUserBIO] = useState("");
 
+
   const user = getAccount();
   const userAddress = user.address;
   const { userProfileDetail, setUserProfileDetail } = useNav();
@@ -34,6 +36,8 @@ const Page = () => {
     abi: VerxioUserProfileABI,
     functionName: "getProfile",
     args: [userAddress],
+
+    
     watch: true,
     onSuccess(data) {
       console.log("Success: UserProfile", data);
@@ -45,6 +49,8 @@ const Page = () => {
 
   setUserProfileDetail(userProfile)
   console.log("Showing user profile: ", userProfileDetail);
+
+
 
   // Updates UserProfile
   const { config } = usePrepareContractWrite({
@@ -92,6 +98,7 @@ const Page = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
+
     {
       console.log("Image Profile: ", selectedImage);
       // console.log("Form values:", values);
@@ -103,6 +110,7 @@ const Page = () => {
         console.log("Transaction submitted:", transaction);
 
         console.log("Task upload successful!...", updateProfileData);
+
         // if (values.fileDoc !== undefined) {}
 
         console.log("Profile upload successful!...");
@@ -193,7 +201,7 @@ const Page = () => {
               name="bio"
               className="border outline-none rounded-[4px] border-black p-2 max-h-[90px]"
             ></textarea>
-          </div>
+          </div
 
           <div className="flex flex-col gap-3 text-16 ">
             <label htmlFor="email">Contact Email</label>
@@ -230,16 +238,6 @@ const Page = () => {
             />
           </div>
 
-          {/* <div className="flex flex-col gap-3 text-16 ">
-            <label htmlFor="profileImageDoc">profileImageDoc</label>
-            <input
-              value={selectedImage}
-              onChange={(e) => setSelectedImage(e.target.value)}
-              name="profileImageDoc"
-              className="border outline-none rounded-[4px] border-black p-2"
-              type="text"
-            />
-          </div> */}
 
           <div>
             <Button
