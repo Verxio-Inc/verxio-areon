@@ -2,9 +2,7 @@
 import { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import { nanoid } from "nanoid";
-import {
-  useContractWrite,
-} from "wagmi";
+import { useContractWrite } from "wagmi";
 import { VerxioSubmitTaskABI } from "../../../components/abi/VerxioSubmitTask.json";
 
 const Page = () => {
@@ -48,7 +46,7 @@ const Page = () => {
 
   const handleSubmitTask = async (e) => {
     e.preventDefault();
-  
+
     try {
       const transaction = submitTaskWrite(); 
       // Now you can perform additional submit logic, e.g., send data to the server
@@ -153,6 +151,8 @@ const Page = () => {
             <option value="icp">ICP</option>
             <option value="etherum">Ethereum</option>
             <option value="solana">Solana</option>
+            <option value="USDT">USDT</option>
+            <option value="USDC">USDC</option>
           </select>
         </div>
 
@@ -205,9 +205,7 @@ const Page = () => {
 
           {isSubmittingTaskError && <p>There is an Error in Submitting Task</p>}
 
-          {isTaskSubmitted  && (
-            <p>Task Submitted Successfully!</p>
-          )}
+          {isTaskSubmitted && <p>Task Submitted Successfully!</p>}
         </article>
       </form>
     </div>
@@ -215,4 +213,3 @@ const Page = () => {
 };
 
 export default Page;
-

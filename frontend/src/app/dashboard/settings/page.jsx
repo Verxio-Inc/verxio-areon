@@ -12,23 +12,26 @@ import {
 } from "wagmi";
 import { VerxioUserProfileABI } from "../../../components/abi/VerxioUserProfile.json";
 import { getAccount } from "@wagmi/core";
-
+import { faker } from '@faker-js/faker';
 
 const Page = () => {
+  const { userProfileDetail, setUserProfileDetail } = useNav();
+
+
+
   const [loading, setLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(userProfileDetail?.profilePictureUrl);
   const fileInputRef = useRef(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [profileURL, setProfileURL] = useState("");
   const [websiteURL, setWebsiteURL] = useState("");
   const [userBIO, setUserBIO] = useState("");
 
-
   const user = getAccount();
   const userAddress = user.address;
-  const { userProfileDetail, setUserProfileDetail } = useNav();
 
   // Gets UserProfile
   const { data: userProfile } = useContractRead({
@@ -41,6 +44,7 @@ const Page = () => {
     watch: true,
     onSuccess(data) {
       console.log("Success: UserProfile", data);
+
     },
     onError(error) {
       console.log("Error", error);
@@ -48,7 +52,6 @@ const Page = () => {
   });
 
   setUserProfileDetail(userProfile)
-  console.log("Showing user profile: ", userProfileDetail);
 
 
 
@@ -63,7 +66,7 @@ const Page = () => {
       phoneNumber,
       userEmail,
       websiteURL,
-      "profile-testurl.com",
+      profileURL,
       "document-testurl.com",
       userBIO,
     ],
@@ -98,13 +101,17 @@ const Page = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
-
     {
       console.log("Image Profile: ", selectedImage);
       // console.log("Form values:", values);
       console.log("Uploading Files...");
 
       try {
+
+        const imageUrl = faker.image.urlLoremFlickr({ 
+          category: 'person'
+        })
+        setProfileURL(imageUrl)
         const transaction = updateProfileWrite();
         // Additional logic after the transaction is submitted
         console.log("Transaction submitted:", transaction);
@@ -131,16 +138,16 @@ const Page = () => {
 
   return (
     <>
-      <div>
+      <div className="">
         <form
-          className="mt-8 flex flex-col gap-5 w-[80%] "
+          className="pt-16 flex flex-col gap-5 sm:w-[100%] px-20 border"
           onSubmit={handleUpdateProfile}
         >
           <div className="flex relative justify-center -mt-24 mb-14">
             <div className="w-[200px] h-[200px] bg-slate-500  border-[8px] border-white rounded-full absolute -top-[100px]">
               {selectedImage && (
                 <Image
-                  src={selectedImage}
+                  src={selectedImage }
                   alt="profile picture"
                   width={200}
                   height={200}
@@ -165,7 +172,7 @@ const Page = () => {
             />
           </div>
 
-          <div className="flex flex-col gap-3 text-16 ">
+          <div className="flex flex-col gap-3 text-16  mt-10">
             <label htmlFor="firstName">First Name</label>
 
             <input
@@ -237,7 +244,6 @@ const Page = () => {
               className="border outline-none rounded-[4px] border-black p-2"
             />
           </div>
-
 
           <div>
             <Button

@@ -8,6 +8,8 @@ import Comment from "../../assets/comment.svg";
 import Ethereum from "../../assets/ethereum.svg";
 import ICP from "../../assets/icp-logo.svg";
 import Solana from "../../assets/solana-logo.svg";
+import USDC from "../../assets/usdc-logo.svg";
+import USDT from "../../assets/usdt-logo.svg";
 import PaperClip from "../../assets/paperclip.svg";
 import { useNav } from "../../context/nav_context";
 import HardDrive from "../../assets/hard-drive.svg";
@@ -23,11 +25,7 @@ const JobDescription = () => {
   const data = useSelector(
     (state) => state.persistedReducer.jobValues.jobDetails
   );
-  console.log(data)
-
-  // const { jobDetails } = useNav();
-
-  // const { data } = jobDetails;
+  console.log(data);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -40,6 +38,10 @@ const JobDescription = () => {
       return Ethereum;
     } else if (coin === "solana") {
       return Solana;
+    } else if (coin === "USDT") {
+      return USDT;
+    } else if (coin === "USDC") {
+      return USDC;
     }
     // return null
   };
@@ -56,16 +58,17 @@ const JobDescription = () => {
               <div className="flex flex-col">
                 <p className="text-[#020202] text-[18px] font-semibold capitalize">
                   {/* Trail Bitz Company */}
-                  {data?.title}
+                  {data?.jobPosterFirstName}
+                  {data.jobPosterLastName}
                 </p>
                 <p className="font-normal text-[14px] text-[#424242]">
-                  Frontend engineer/ Full-time (remote)/ Lagos.
+                  {data.jobPosterBio}
                 </p>
               </div>
             </div>
-            <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center">
-              <p className="text-[14px] font-medium">{data.amount}</p>
-              <span className="text-[8px] mr-1">$300</span>
+            <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center gap-2">
+              <p className="text-[14px] font-medium">{Number(data.amount)}</p>
+              {/* <span className="text-[8px] mr-1">$300</span> */}
               <Image
                 alt="Ethereum"
                 src={logo(data.paymentMethod)}
@@ -73,43 +76,47 @@ const JobDescription = () => {
               />
             </div>
           </div>
-          <div className=" flex gap-[24px] mt-[22px] items-center">
-            <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center bg-[#F7F7FD]">
-              <div className="flex gap-1 items-center border-r pr-2 mr-2">
+          <p className="mt-4 ml-2">{data.jobTitle}</p>
+          <div className="flex justify-between items-center">
+            <div className=" flex gap-[24px] mt-[22px] items-center">
+              <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center bg-[#F7F7FD]">
+                <div className="flex gap-1 items-center border-r pr-2 mr-2">
+                  <Image
+                    alt="like it"
+                    src={Thumbsup}
+                    className="cursor-pointer"
+                  />
+                  <p className="text-[12px]">{Number(data.upvotes)}</p>
+                </div>
                 <Image
-                  alt="like it"
-                  src={Thumbsup}
+                  alt="dislike it"
+                  src={Thumbsdown}
                   className="cursor-pointer"
                 />
-                <p className="text-[12px]">1.2k</p>
               </div>
-              <Image
-                alt="dislike it"
-                src={Thumbsdown}
-                className="cursor-pointer"
-              />
+              <div className="border rounded-lg px-4 py-[9px] border-[#B6B8EC] flex gap-2 bg-[#F7F7FD] items-center">
+                <Image
+                  alt="comment on it"
+                  src={Comment}
+                  className="cursor-pointer"
+                />
+                <p className="text-[12px]">0</p>
+              </div>
             </div>
-            <div className="border rounded-lg px-4 py-[9px] border-[#B6B8EC] flex gap-2 bg-[#F7F7FD] items-center">
-              <Image
-                alt="comment on it"
-                src={Comment}
-                className="cursor-pointer"
-              />
-              <p className="text-[12px]">201</p>
-            </div>
+            <p className="font-medium capitalize mt-4">{data.jobType}</p>
           </div>
         </div>
         <div className="border border-[#B6B8EC bg-[#FFFFFF] shadow rounded-2xl p-[30px]">
-          <DescListCard label="Job Description" value={data.description} />
+          <DescListCard label="Job Description" value={data.jobDescription} />
           <DescListCard
             label="responsibilities"
             // type="list"
-            value={data.responsibilities}
+            value={data.jobResponsibilities}
           />
           <DescListCard
             label="requirements"
             // type="list"
-            value={data.requirements}
+            value={data.jobRequirements}
           />
         </div>
         <div className="flex gap-5 mt-[56px] justify-end">

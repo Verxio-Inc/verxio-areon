@@ -6,7 +6,7 @@ const page = () => {
   return (
     <div className="border p-[32px] rounded-2xl relativ ">
       <h2 className="text-primary text-[28px] font-semibold mb-[32px] capitalize">
-        Welcome back John
+        Job Details
       </h2>
       {/* {item.map((item) => ( */}
         <JobDescription/>
