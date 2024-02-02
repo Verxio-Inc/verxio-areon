@@ -38,7 +38,7 @@ const JobCard = ({ jobs }) => {
       return USDC
     }
   };
-  
+
 
   const handleDescription = () => {
     const updatedDetails = {
@@ -69,6 +69,12 @@ const JobCard = ({ jobs }) => {
         <div className=" flex gap-4">
           <div>
             <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-8 aspect-square object-cover rounded-full border" />
+            {/* <image
+              src={jobs?.jobPosterProfileUrl}
+              alt="profile image"
+              width={100}
+              height={100}
+            /> */}
           </div>
           <div className="flex flex-col gap-2">
             <div>

@@ -15,8 +15,12 @@ import { getAccount } from "@wagmi/core";
 import { faker } from '@faker-js/faker';
 
 const Page = () => {
+  const { userProfileDetail, setUserProfileDetail } = useNav();
+
+
+
   const [loading, setLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(userProfileDetail?.profilePictureUrl);
   const fileInputRef = useRef(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -28,7 +32,6 @@ const Page = () => {
 
   const user = getAccount();
   const userAddress = user.address;
-  const { userProfileDetail, setUserProfileDetail } = useNav();
 
   // Gets UserProfile
   const { data: userProfile } = useContractRead({
@@ -41,6 +44,7 @@ const Page = () => {
     watch: true,
     onSuccess(data) {
       console.log("Success: UserProfile", data);
+
     },
     onError(error) {
       console.log("Error", error);
@@ -98,7 +102,10 @@ const Page = () => {
     e.preventDefault();
 
     {
+      console.log("Image Profile: ", selectedImage);
+      // console.log("Form values:", values);
       console.log("Uploading Files...");
+
       try {
 
         const imageUrl = faker.image.urlLoremFlickr({ 
@@ -108,7 +115,11 @@ const Page = () => {
         const transaction = updateProfileWrite();
         // Additional logic after the transaction is submitted
         console.log("Transaction submitted:", transaction);
+
         console.log("Task upload successful!...", updateProfileData);
+
+        // if (values.fileDoc !== undefined) {}
+
         console.log("Profile upload successful!...");
 
         setFirstName("");
@@ -136,7 +147,7 @@ const Page = () => {
             <div className="w-[200px] h-[200px] bg-slate-500  border-[8px] border-white rounded-full absolute -top-[100px]">
               {selectedImage && (
                 <Image
-                  src={selectedImage}
+                  src={selectedImage }
                   alt="profile picture"
                   width={200}
                   height={200}
