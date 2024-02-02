@@ -2,11 +2,7 @@
 import { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import { nanoid } from "nanoid";
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useContractRead,
-} from "wagmi";
+import { useContractWrite } from "wagmi";
 import { VerxioSubmitTaskABI } from "../../../components/abi/VerxioSubmitTask.json";
 
 const Page = () => {
@@ -22,13 +18,18 @@ const Page = () => {
   const [totalPeople, setTotalPeople] = useState();
   const [amount, setAmount] = useState();
   const [fileDoc, setFileDoc] = useState();
-
   const taskID = nanoid();
 
-  const { config } = usePrepareContractWrite({
-    address: "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe",
+  const {
+    data: submitTaskData,
+    isLoading: isSubmittingTask,
+    isSuccess: isTaskSubmitted,
+    write: submitTaskWrite,
+    isError: isSubmittingTaskError,
+  } = useContractWrite({
+    address: "0xA2A3b38f6088d729a1454BCD2863ce87B9953079",
     abi: VerxioSubmitTaskABI,
-    // functionName: "submitTask",
+    functionName: "submitTask",
     args: [
       taskID,
       title,
@@ -43,28 +44,19 @@ const Page = () => {
     ],
   });
 
-  // const {
-  //   data: submitTaskData,
-  //   isLoading: isSubmittingTask,
-  //   isSuccess: isTaskSubmitted,
-  //   write: submitTaskWrite,
-  //   isError: isSubmittingTaskError,
-  // } = useContractWrite(config);
+  const handleSubmitTask = async (e) => {
+    e.preventDefault();
 
-  // const handleSubmitTask = async (e) => {
-  //   e.preventDefault();
-  //   {
-  //     try {
-  //       const transaction = submitTaskWrite();
-  //       console.log("Transaction submitted:", transaction);
-  //       console.log("Task upload successful!...", submitTaskData);
+    try {
+      const transaction = submitTaskWrite();
+      console.log("Transaction submitted:", transaction);
+      console.log("Task upload successful!...", submitTaskData);
 
-  //       // Now you can perform additional submit logic, e.g., send data to the server
-  //     } catch (error) {
-  //       console.error("File Error:", error);
-  //     }
-  //   }
-  // };
+      // Now you can perform additional submit logic, e.g., send data to the server
+    } catch (error) {
+      console.error("File Error:", error);
+    }
+  };
 
   return (
     <div className="border rounded-[8px] px-[90px] py-[50px]">
@@ -76,7 +68,7 @@ const Page = () => {
         do you have in mind today?
       </div>
 
-      <form action="" >
+      <form action="" onSubmit={handleSubmitTask}>
         <div className="flex flex-col gap-3 text-16 ">
           <label htmlFor="title">Enter Task Title</label>
           <input
@@ -98,7 +90,7 @@ const Page = () => {
             cols="30"
             rows="10"
             name="description"
-            className="border outline-none rounded-[4px] border-black p-2"
+            className="border outline-none rounded-[4px] border-black p-2 max-h-[120px]"
           ></textarea>
         </div>
 
@@ -112,7 +104,7 @@ const Page = () => {
             cols="30"
             rows="10"
             name="responsibilities"
-            className="border outline-none rounded-[4px] border-black p-2 max-h-[90px]"
+            className="border outline-none rounded-[4px] border-black p-2 max-h-[120px]"
           ></textarea>
         </div>
 
@@ -126,7 +118,7 @@ const Page = () => {
             cols="30"
             rows="10"
             name="requirements"
-            className="border outline-none rounded-[4px] border-black p-2 max-h-[90px]"
+            className="border outline-none rounded-[4px] border-black p-2 max-h-[120px]"
           ></textarea>
         </div>
 
@@ -209,15 +201,13 @@ const Page = () => {
           <Button type="submit" name="Submit Task" className="mt-8 w-full " />
         </div>
 
-        {/* <article className="mt-4 text-sm">
+        <article className="mt-4 text-sm">
           {isSubmittingTask && <p> Submitting Task...</p>}
 
           {isSubmittingTaskError && <p>There is an Error in Submitting Task</p>}
 
-          {isTaskSubmitted && isGettingTask && (
-            <p>Task Submitted: Getting Task Data</p>
-          )}
-        </article> */}
+          {isTaskSubmitted && <p>Task Submitted Successfully!</p>}
+        </article>
       </form>
     </div>
   );
