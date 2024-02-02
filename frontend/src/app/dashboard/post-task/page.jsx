@@ -4,8 +4,6 @@ import Button from "../../../components/Button";
 import { nanoid } from "nanoid";
 import {
   useContractWrite,
-  usePrepareContractWrite,
-  useContractRead,
 } from "wagmi";
 import { VerxioSubmitTaskABI } from "../../../components/abi/VerxioSubmitTask.json";
 
@@ -22,8 +20,6 @@ const Page = () => {
   const [totalPeople, setTotalPeople] = useState();
   const [amount, setAmount] = useState();
   const [fileDoc, setFileDoc] = useState();
-
-
   const taskID = nanoid();
 
   const {
@@ -49,7 +45,6 @@ const Page = () => {
       requirements,
     ],
   });
-
 
   const handleSubmitTask = async (e) => {
     e.preventDefault();
@@ -97,7 +92,7 @@ const Page = () => {
             cols="30"
             rows="10"
             name="description"
-            className="border outline-none rounded-[4px] border-black p-2"
+            className="border outline-none rounded-[4px] border-black p-2 max-h-[120px]"
           ></textarea>
         </div>
 
@@ -111,7 +106,7 @@ const Page = () => {
             cols="30"
             rows="10"
             name="responsibilities"
-            className="border outline-none rounded-[4px] border-black p-2 max-h-[90px]"
+            className="border outline-none rounded-[4px] border-black p-2 max-h-[120px]"
           ></textarea>
         </div>
 
@@ -125,7 +120,7 @@ const Page = () => {
             cols="30"
             rows="10"
             name="requirements"
-            className="border outline-none rounded-[4px] border-black p-2 max-h-[90px]"
+            className="border outline-none rounded-[4px] border-black p-2 max-h-[120px]"
           ></textarea>
         </div>
 
