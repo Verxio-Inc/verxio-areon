@@ -1,9 +1,8 @@
 "use client";
 import { useState, React, useRef } from "react";
-
+import { useNav } from "../../../context/nav_context";
 import Button from "../../../components/Button";
 import Edit from "../../../assets/edit.svg";
-
 import Image from "next/image";
 import {
   useContractWrite,
@@ -29,8 +28,7 @@ const Page = () => {
 
   const user = getAccount();
   const userAddress = user.address;
-
-  console.log("User Info: ", userAddress);
+  const { userProfileDetail, setUserProfileDetail } = useNav();
 
   // Gets UserProfile
   const { data: userProfile } = useContractRead({
@@ -49,7 +47,8 @@ const Page = () => {
     },
   });
 
-  console.log("Showing user profile: ", userProfile);
+  setUserProfileDetail(userProfile)
+  console.log("Showing user profile: ", userProfileDetail);
 
 
 
