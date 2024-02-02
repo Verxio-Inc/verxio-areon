@@ -1,12 +1,9 @@
 "use client";
-import { useContext, useEffect, useState, React, useRef } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useState, React, useRef, useEffect } from "react";
+import { useNav } from "../../../context/nav_context";
 import Button from "../../../components/Button";
 import Edit from "../../../assets/edit.svg";
-import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
-import {
-  useContractWrite,
 import {
   useContractWrite,
   usePrepareContractWrite,
@@ -15,10 +12,6 @@ import {
 } from "wagmi";
 import { VerxioUserProfileABI } from "../../../components/abi/VerxioUserProfile.json";
 import { getAccount } from "@wagmi/core";
-import { root } from "../../../../store";
-import { setUserProfile } from "../../../../slices/jobSlice";
-import { useNav } from "../../../context/nav_context";
-import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
@@ -31,28 +24,14 @@ const Page = () => {
   const [websiteURL, setWebsiteURL] = useState("");
   const [userBIO, setUserBIO] = useState("");
 
-  const dispatch = useDispatch();
-  const router = useRouter
-
-
-  const userProfile2 = useSelector(
-    (state) => state.persistedReducer.jobValues.userProfile
-  );
-
-  const {userProfile3, setUserProfile3} = useNav()
-
   const user = getAccount();
   const userAddress = user.address;
-  const { userProfileDetail, setUserProfileDetail } = useNav();;
+  const { userProfileDetail, setUserProfileDetail } = useNav();
 
-  console.log("User Info: ", userAddress);
-
+  // Gets UserProfile
   const { data: userProfile } = useContractRead({
     address: "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe",
-    // address: "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe",
     abi: VerxioUserProfileABI,
-    functionName: "getProfile",
-    args: [userAddress],
     functionName: "getProfile",
     args: [userAddress],
     watch: true,
@@ -65,20 +44,13 @@ const Page = () => {
   });
 
   useEffect(() => {
-    dispatch(setUserProfile(userProfile));
-    setUserProfile3(userProfile2)
-  }, []);
-
-  // use userProfile3 if dispatch own is confusing you, if it works, i will change it to the dispatch own.. cause it will be important..
+    setUserProfileDetail(userProfile);
+    console.log("Showing user profile: ", userProfileDetail);
+  }, [userProfile]);
 
 
-  // console.log("Showing user profile: ", userProfile);
-  // console.log("Showing user profile2: ", userProfile2);// this is dispatch own,
-    
-  console.log("Showing user profile3: ", userProfile3);// this is useNav own....
-
+  // Updates UserProfile
   const { config } = usePrepareContractWrite({
-    // address: "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe",
     address: "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe",
     abi: VerxioUserProfileABI,
     functionName: "updateProfile",
@@ -90,8 +62,6 @@ const Page = () => {
       websiteURL,
       "profile-testurl.com",
       "document-testurl.com",
-      userBIO,
-    ],
       userBIO,
     ],
   });
@@ -122,46 +92,20 @@ const Page = () => {
     fileInputRef.current.click();
   };
 
-  const initialValues = {
-    firstName: "",
-    lastName: "",
-    bio: "",
-    email: "",
-    phoneNumber: "",
-    website: "",
-    fileDoc: "",
-    profileImageDoc: "",
-  };
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
 
-  const validationchema = Yup.object().shape({
-    firstName: Yup.string().required("First name is required"),
-    lastName: Yup.string().required("Last name is required"),
-    bio: Yup.string().required("Bio is required"),
-    email: Yup.string().required("Email is required"),
-    phoneNumber: Yup.number("value must be a number").required(
-      "Please input number"
-    ),
-    fileDoc: Yup.string().required("Please upload necessary doc"),
-  });
-
-  const submitValue = async (values) => {
     {
       console.log("Image Profile: ", selectedImage);
-      console.log("Form values:", values);
+      // console.log("Form values:", values);
       console.log("Uploading Files...");
 
-      setFirstName(values.firstName),
-        setLastName(values.lastName),
-        setUserBIO(values.bio),
-        setUserEmail(values.email),
-        setPhoneNumber(values.phoneNumber),
-        setWebsiteURL(values.website);
       try {
-        const transaction = write();
+        const transaction = updateProfileWrite();
         // Additional logic after the transaction is submitted
         console.log("Transaction submitted:", transaction);
 
-        console.log("Task upload successful!...", data);
+        console.log("Task upload successful!...", updateProfileData);
         // if (values.fileDoc !== undefined) {}
 
         console.log("Profile upload successful!...");
@@ -182,7 +126,7 @@ const Page = () => {
 
   return (
     <>
-      <div>
+      <div className="p-10">
         <form
           className="mt-8 flex flex-col gap-5 w-[80%] "
           onSubmit={handleUpdateProfile}
@@ -289,55 +233,35 @@ const Page = () => {
             />
           </div>
 
-              <div className="flex flex-col gap-3 text-16 ">
-                <label htmlFor="fileDoc">
-                  Upload file (doc, pdf, png, jpg, etc.)
-                </label>
-                <input
-                  name="fileDoc"
-                  className="border outline-none rounded-[4px] border-black p-2"
-                  type="file"
-                  onChange={(event) =>
-                    setFieldValue("fileDoc", event.currentTarget.files[0])
-                  }
-                />
-                <ErrorMessage name="fileDoc" component={Error} />
-              </div>
-              <div>
-                <Button
-                  type="submit"
-                  name="Update Profile"
-                  className="mt-8 w-full "
-                  isLoading={true}
-                  onClick={() => {
-                    if (isValid && dirty) {
-                      // console.log(values);
-                      submitValue(values);
-                      // router.push('/dashboared/earn') 
-                      //condition for above, if successful then router.push
-                    }
+          {/* <div className="flex flex-col gap-3 text-16 ">
+            <label htmlFor="profileImageDoc">profileImageDoc</label>
+            <input
+              value={selectedImage}
+              onChange={(e) => setSelectedImage(e.target.value)}
+              name="profileImageDoc"
+              className="border outline-none rounded-[4px] border-black p-2"
+              type="text"
+            />
+          </div> */}
 
-                  }}
-                />
-                {/* <LoadingButton
-                type="submit"
-                variant="contained"
-                // color="primary"
-                className="mt-8 w-full"
-                loading={loading}
-                onClick={() => {
-                  if (isValid && dirty) {
-                    submitValue(values);
-                    setLoading(true);
-                  }
-                }}
-                >
-                Submit
-              </LoadingButton> */}
-              </div>
-            </Form>
-          )}
-        </Formik>
+          <div>
+            <Button
+              type="submit"
+              name="Update Profile"
+              className="mt-8 w-full "
+            />
+          </div>
+
+          <article className="mt-4 text-sm">
+            {isUpdatingProfile && <p> Updating Profile...</p>}
+
+            {isUpdatingProfileError && (
+              <p>There is an Error in Updating Profile</p>
+            )}
+
+            {isProfileUpdated && <p>Profile Updated...</p>}
+          </article>
+        </form>
       </div>
     </>
   );

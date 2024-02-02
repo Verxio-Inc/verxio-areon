@@ -23,13 +23,12 @@ const Page = () => {
   const [amount, setAmount] = useState();
   const [fileDoc, setFileDoc] = useState();
 
-
   const taskID = nanoid();
 
   const { config } = usePrepareContractWrite({
-    address: "0xa2a3b38f6088d729a1454bcd2863ce87b9953079",
+    address: "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe",
     abi: VerxioSubmitTaskABI,
-    functionName: "submitTask",
+    // functionName: "submitTask",
     args: [
       taskID,
       title,
@@ -44,29 +43,28 @@ const Page = () => {
     ],
   });
 
+  // const {
+  //   data: submitTaskData,
+  //   isLoading: isSubmittingTask,
+  //   isSuccess: isTaskSubmitted,
+  //   write: submitTaskWrite,
+  //   isError: isSubmittingTaskError,
+  // } = useContractWrite(config);
 
-  const {
-    data: submitTaskData,
-    isLoading: isSubmittingTask,
-    isSuccess: isTaskSubmitted,
-    write: submitTaskWrite,
-    isError: isSubmittingTaskError,
-  } = useContractWrite(config);
+  // const handleSubmitTask = async (e) => {
+  //   e.preventDefault();
+  //   {
+  //     try {
+  //       const transaction = submitTaskWrite();
+  //       console.log("Transaction submitted:", transaction);
+  //       console.log("Task upload successful!...", submitTaskData);
 
-
-  const handleSubmitTask = async (e) => {
-    e.preventDefault();
-  
-    try {
-      const transaction = submitTaskWrite(); 
-      console.log("Transaction submitted:", transaction);
-      console.log("Task upload successful!...", submitTaskData);
-  
-      // Now you can perform additional submit logic, e.g., send data to the server
-    } catch (error) {
-      console.error("File Error:", error);
-    }
-  };
+  //       // Now you can perform additional submit logic, e.g., send data to the server
+  //     } catch (error) {
+  //       console.error("File Error:", error);
+  //     }
+  //   }
+  // };
 
   return (
     <div className="border rounded-[8px] px-[90px] py-[50px]">
@@ -78,7 +76,7 @@ const Page = () => {
         do you have in mind today?
       </div>
 
-      <form action="" onSubmit={handleSubmitTask}>
+      <form action="" >
         <div className="flex flex-col gap-3 text-16 ">
           <label htmlFor="title">Enter Task Title</label>
           <input
@@ -211,7 +209,7 @@ const Page = () => {
           <Button type="submit" name="Submit Task" className="mt-8 w-full " />
         </div>
 
-        <article className="mt-4 text-sm">
+        {/* <article className="mt-4 text-sm">
           {isSubmittingTask && <p> Submitting Task...</p>}
 
           {isSubmittingTaskError && <p>There is an Error in Submitting Task</p>}
@@ -219,11 +217,10 @@ const Page = () => {
           {isTaskSubmitted && isGettingTask && (
             <p>Task Submitted: Getting Task Data</p>
           )}
-        </article>
+        </article> */}
       </form>
     </div>
   );
 };
 
 export default Page;
-
