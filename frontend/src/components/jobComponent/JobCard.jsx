@@ -7,6 +7,8 @@ import Comment from "../../assets/comment.svg";
 import Ethereum from "../../assets/ethereum.svg";
 import ICP from "../../assets/icp-logo.svg";
 import Solana from "../../assets/solana-logo.svg";
+import USDC from '../../assets/usdc-logo.svg'
+import USDT from '../../assets/usdt-logo.svg'
 import Button from "../Button";
 import { setJobDetails } from "../../../slices/jobSlice";
 import {
@@ -30,9 +32,13 @@ const JobCard = ({ jobs }) => {
       return Ethereum;
     } else if (coin === "solana") {
       return Solana;
+    } else if (coin === 'USDT'){
+      return USDT
+    } else if (coin === 'USDC'){
+      return USDC
     }
-    // return null
   };
+  
 
   const handleDescription = () => {
     const updatedDetails = {

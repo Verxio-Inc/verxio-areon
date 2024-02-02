@@ -8,6 +8,8 @@ import Comment from "../../assets/comment.svg";
 import Ethereum from "../../assets/ethereum.svg";
 import ICP from "../../assets/icp-logo.svg";
 import Solana from "../../assets/solana-logo.svg";
+import USDC from "../../assets/usdc-logo.svg";
+import USDT from "../../assets/usdt-logo.svg";
 import PaperClip from "../../assets/paperclip.svg";
 import { useNav } from "../../context/nav_context";
 import HardDrive from "../../assets/hard-drive.svg";
@@ -23,8 +25,7 @@ const JobDescription = () => {
   const data = useSelector(
     (state) => state.persistedReducer.jobValues.jobDetails
   );
-  console.log(data)
-
+  console.log(data);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -37,6 +38,10 @@ const JobDescription = () => {
       return Ethereum;
     } else if (coin === "solana") {
       return Solana;
+    } else if (coin === "USDT") {
+      return USDT;
+    } else if (coin === "USDC") {
+      return USDC;
     }
     // return null
   };

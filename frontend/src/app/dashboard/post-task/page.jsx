@@ -151,6 +151,8 @@ const Page = () => {
             <option value="icp">ICP</option>
             <option value="etherum">Ethereum</option>
             <option value="solana">Solana</option>
+            <option value="USDT">USDT</option>
+            <option value="USDC">USDC</option>
           </select>
         </div>
 

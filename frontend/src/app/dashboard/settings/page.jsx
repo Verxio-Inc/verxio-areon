@@ -12,6 +12,7 @@ import {
 } from "wagmi";
 import { VerxioUserProfileABI } from "../../../components/abi/VerxioUserProfile.json";
 import { getAccount } from "@wagmi/core";
+import { faker } from '@faker-js/faker';
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,11 @@ const Page = () => {
   const userAddress = user.address;
   const { userProfileDetail, setUserProfileDetail } = useNav();
 
+  // Using default options
+const imageUrl = faker.image.urlLoremFlickr({ 
+  category: 'person'
+})
+
   // Gets UserProfile
   const { data: userProfile } = useContractRead({
     address: "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe",
@@ -35,6 +41,7 @@ const Page = () => {
     functionName: "getProfile",
     args: [userAddress],
 
+    
     watch: true,
     onSuccess(data) {
       console.log("Success: UserProfile", data);
@@ -44,8 +51,9 @@ const Page = () => {
     },
   });
 
-  setUserProfileDetail(userProfile);
-  console.log("Showing user profile: ", userProfileDetail);
+  setUserProfileDetail(userProfile)
+
+
 
   // Updates UserProfile
   const { config } = usePrepareContractWrite({
@@ -58,7 +66,7 @@ const Page = () => {
       phoneNumber,
       userEmail,
       websiteURL,
-      "profile-testurl.com",
+      imageUrl,
       "document-testurl.com",
       userBIO,
     ],
@@ -125,9 +133,9 @@ const Page = () => {
 
   return (
     <>
-      <div>
+      <div className="">
         <form
-          className="mt-8 flex flex-col gap-5 w-[80%] "
+          className="pt-16 flex flex-col gap-5 sm:w-[100%] px-20 border"
           onSubmit={handleUpdateProfile}
         >
           <div className="flex relative justify-center -mt-24 mb-14">
@@ -159,7 +167,7 @@ const Page = () => {
             />
           </div>
 
-          <div className="flex flex-col gap-3 text-16 ">
+          <div className="flex flex-col gap-3 text-16  mt-10">
             <label htmlFor="firstName">First Name</label>
 
             <input
