@@ -26,8 +26,14 @@ const Page = () => {
 
   const taskID = nanoid();
 
-  const { config } = usePrepareContractWrite({
-    address: "0xa2a3b38f6088d729a1454bcd2863ce87b9953079",
+  const {
+    data: submitTaskData,
+    isLoading: isSubmittingTask,
+    isSuccess: isTaskSubmitted,
+    write: submitTaskWrite,
+    isError: isSubmittingTaskError,
+  } = useContractWrite({
+    address: "0xA2A3b38f6088d729a1454BCD2863ce87B9953079",
     abi: VerxioSubmitTaskABI,
     functionName: "submitTask",
     args: [
@@ -43,15 +49,6 @@ const Page = () => {
       requirements,
     ],
   });
-
-
-  const {
-    data: submitTaskData,
-    isLoading: isSubmittingTask,
-    isSuccess: isTaskSubmitted,
-    write: submitTaskWrite,
-    isError: isSubmittingTaskError,
-  } = useContractWrite(config);
 
 
   const handleSubmitTask = async (e) => {
@@ -216,8 +213,8 @@ const Page = () => {
 
           {isSubmittingTaskError && <p>There is an Error in Submitting Task</p>}
 
-          {isTaskSubmitted && isGettingTask && (
-            <p>Task Submitted: Getting Task Data</p>
+          {isTaskSubmitted  && (
+            <p>Task Submitted Successfully!</p>
           )}
         </article>
       </form>
