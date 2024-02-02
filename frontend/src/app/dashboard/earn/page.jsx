@@ -8,7 +8,7 @@ import {
   useReadContract,
   useContractRead
  } from 'wagmi'
- import VerxioSubmitTaskABI from "../../../components/abi/VerxioSubmitTask.json"
+ import {VerxioSubmitTaskABI} from "../../../components/abi/VerxioSubmitTask.json"
 import { useNav } from "../../../context/nav_context";
 
 const Page = () => {
@@ -31,7 +31,7 @@ const Page = () => {
         <h2 className="text-primary text-[28px] font-semibold mb-[32px] capitalize">
           Welcome back John
         </h2>
-        {jobs.map((item) => (
+        {data.map((item) => (
           <JobCard key={item.key} jobs={item}/>
         ))}
       </div>

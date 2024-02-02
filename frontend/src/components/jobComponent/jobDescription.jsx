@@ -73,43 +73,47 @@ const JobDescription = () => {
               />
             </div>
           </div>
-          <div className=" flex gap-[24px] mt-[22px] items-center">
-            <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center bg-[#F7F7FD]">
-              <div className="flex gap-1 items-center border-r pr-2 mr-2">
+          <p className="mt-4 ml-2">{data.jobTitle}</p>
+          <div className="flex justify-between items-center">
+            <div className=" flex gap-[24px] mt-[22px] items-center">
+              <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center bg-[#F7F7FD]">
+                <div className="flex gap-1 items-center border-r pr-2 mr-2">
+                  <Image
+                    alt="like it"
+                    src={Thumbsup}
+                    className="cursor-pointer"
+                  />
+                  <p className="text-[12px]">1.2k</p>
+                </div>
                 <Image
-                  alt="like it"
-                  src={Thumbsup}
+                  alt="dislike it"
+                  src={Thumbsdown}
                   className="cursor-pointer"
                 />
-                <p className="text-[12px]">1.2k</p>
               </div>
-              <Image
-                alt="dislike it"
-                src={Thumbsdown}
-                className="cursor-pointer"
-              />
+              <div className="border rounded-lg px-4 py-[9px] border-[#B6B8EC] flex gap-2 bg-[#F7F7FD] items-center">
+                <Image
+                  alt="comment on it"
+                  src={Comment}
+                  className="cursor-pointer"
+                />
+                <p className="text-[12px]">201</p>
+              </div>
             </div>
-            <div className="border rounded-lg px-4 py-[9px] border-[#B6B8EC] flex gap-2 bg-[#F7F7FD] items-center">
-              <Image
-                alt="comment on it"
-                src={Comment}
-                className="cursor-pointer"
-              />
-              <p className="text-[12px]">201</p>
-            </div>
+            <p className="font-bold capitalize mt-4">{data.jobType}</p>
           </div>
         </div>
         <div className="border border-[#B6B8EC bg-[#FFFFFF] shadow rounded-2xl p-[30px]">
-          <DescListCard label="Job Description" value={data.description} />
+          <DescListCard label="Job Description" value={data.jobDescription} />
           <DescListCard
             label="responsibilities"
             // type="list"
-            value={data.responsibilities}
+            value={data.jobResponsibilities}
           />
           <DescListCard
             label="requirements"
             // type="list"
-            value={data.requirements}
+            value={data.jobRequirements}
           />
         </div>
         <div className="flex gap-5 mt-[56px] justify-end">

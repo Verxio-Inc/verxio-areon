@@ -1,5 +1,5 @@
 "use client";
-import { useState, React, useRef, useEffect } from "react";
+import { useState, React, useRef } from "react";
 import { useNav } from "../../../context/nav_context";
 import Button from "../../../components/Button";
 import Edit from "../../../assets/edit.svg";
@@ -34,6 +34,7 @@ const Page = () => {
     abi: VerxioUserProfileABI,
     functionName: "getProfile",
     args: [userAddress],
+
     watch: true,
     onSuccess(data) {
       console.log("Success: UserProfile", data);
@@ -43,11 +44,8 @@ const Page = () => {
     },
   });
 
-  useEffect(() => {
-    setUserProfileDetail(userProfile);
-    console.log("Showing user profile: ", userProfileDetail);
-  }, [userProfile]);
-
+  setUserProfileDetail(userProfile);
+  console.log("Showing user profile: ", userProfileDetail);
 
   // Updates UserProfile
   const { config } = usePrepareContractWrite({
@@ -106,6 +104,7 @@ const Page = () => {
         console.log("Transaction submitted:", transaction);
 
         console.log("Task upload successful!...", updateProfileData);
+
         // if (values.fileDoc !== undefined) {}
 
         console.log("Profile upload successful!...");
@@ -126,7 +125,7 @@ const Page = () => {
 
   return (
     <>
-      <div className="p-10">
+      <div>
         <form
           className="mt-8 flex flex-col gap-5 w-[80%] "
           onSubmit={handleUpdateProfile}
@@ -232,17 +231,6 @@ const Page = () => {
               className="border outline-none rounded-[4px] border-black p-2"
             />
           </div>
-
-          {/* <div className="flex flex-col gap-3 text-16 ">
-            <label htmlFor="profileImageDoc">profileImageDoc</label>
-            <input
-              value={selectedImage}
-              onChange={(e) => setSelectedImage(e.target.value)}
-              name="profileImageDoc"
-              className="border outline-none rounded-[4px] border-black p-2"
-              type="text"
-            />
-          </div> */}
 
           <div>
             <Button
