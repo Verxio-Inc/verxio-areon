@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useContractRead } from "wagmi";
-import { VerxioUserProfileABI } from "../../../components/abi/VerxioUserProfile.json";
+import  VerxioUserProfileABI  from "../../../components/abi/VerxioUserProfile.json";
 import { getAccount } from "@wagmi/core";
 
 const GetProfile = () => {

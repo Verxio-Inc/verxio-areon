@@ -47,7 +47,7 @@ const Page = () => {
 
   useEffect(() => {
     setUserProfileDetail(userProfile);
-  }, [userProfile]);
+  }, [ setUserProfileDetail, userProfile]);
 
   console.log("Showing user profile: ", userProfileDetail);
 
