@@ -25,9 +25,6 @@ const JobDescription = () => {
   );
   console.log(data)
 
-  // const { jobDetails } = useNav();
-
-  // const { data } = jobDetails;
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -56,16 +53,17 @@ const JobDescription = () => {
               <div className="flex flex-col">
                 <p className="text-[#020202] text-[18px] font-semibold capitalize">
                   {/* Trail Bitz Company */}
-                  {data?.title}
+                  {data?.jobPosterFirstName}
+                  {data.jobPosterLastName}
                 </p>
                 <p className="font-normal text-[14px] text-[#424242]">
-                  Frontend engineer/ Full-time (remote)/ Lagos.
+                  {data.jobPosterBio}
                 </p>
               </div>
             </div>
-            <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center">
-              <p className="text-[14px] font-medium">{data.amount}</p>
-              <span className="text-[8px] mr-1">$300</span>
+            <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center gap-2">
+              <p className="text-[14px] font-medium">{Number(data.amount)}</p>
+              {/* <span className="text-[8px] mr-1">$300</span> */}
               <Image
                 alt="Ethereum"
                 src={logo(data.paymentMethod)}
@@ -83,7 +81,7 @@ const JobDescription = () => {
                     src={Thumbsup}
                     className="cursor-pointer"
                   />
-                  <p className="text-[12px]">1.2k</p>
+                  <p className="text-[12px]">{Number(data.upvotes)}</p>
                 </div>
                 <Image
                   alt="dislike it"
@@ -97,10 +95,10 @@ const JobDescription = () => {
                   src={Comment}
                   className="cursor-pointer"
                 />
-                <p className="text-[12px]">201</p>
+                <p className="text-[12px]">0</p>
               </div>
             </div>
-            <p className="font-bold capitalize mt-4">{data.jobType}</p>
+            <p className="font-medium capitalize mt-4">{data.jobType}</p>
           </div>
         </div>
         <div className="border border-[#B6B8EC bg-[#FFFFFF] shadow rounded-2xl p-[30px]">

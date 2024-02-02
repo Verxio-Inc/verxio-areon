@@ -1,7 +1,6 @@
 import React from "react";
 
 const DescListCard = ({ label, type, value }) => {
-    console.log(value)
   return (
     <>
       <h2 className="font-semibold text-[16px] mb-5 capitalize ">{label}:</h2>
@@ -12,7 +11,7 @@ const DescListCard = ({ label, type, value }) => {
           ))}
         </ul>
       ) : (
-        <p className="mb-5 text-[16px]">{value}</p>
+        <p className="mb-5 text-[14px]">{value}</p>
       )}
     </>
   );

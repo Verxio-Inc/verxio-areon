@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Thumbsup from "../../assets/thumbs-up.svg";
@@ -19,19 +19,9 @@ import { useNav } from "../../context/nav_context";
 import { useSelector, useDispatch } from "react-redux";
 
 const JobCard = ({ jobs }) => {
-  console.log(jobs);
-  // const { setJobDetails} = useNav();
+  // console.log(jobs);
 
   const dispatch = useDispatch();
-  
-  // const jobDetailss = useSelector(
-  //   (state) => state.persistedReducer.jobValues.jobDetails
-  // );
-
-  // console.log(jobDetailss)
-
-  // const { data } = jobs;
-  // console.log("Data", data)
 
   const logo = (coin) => {
     if (coin === "icp") {
@@ -44,6 +34,29 @@ const JobCard = ({ jobs }) => {
     // return null
   };
 
+  const handleDescription = () => {
+    const updatedDetails = {
+      ...jobs,
+      amount:
+        typeof jobs.amount === "bigint" ? Number(jobs.amount) : jobs.amount,
+      downvotes:
+        typeof jobs.downvotes === "bigint"
+          ? Number(jobs.downvotes)
+          : jobs.downvotes,
+      upvotes:
+        typeof jobs.upvotes === "bigint" ? Number(jobs.upvotes) : jobs.upvotes,
+      postedTime:
+        typeof jobs.postedTime === "bigint"
+          ? Number(jobs.postedTime)
+          : jobs.postedTime,
+      totalPeople:
+        typeof jobs.totalPeople === "bigint"
+          ? Number(jobs.totalPeople)
+          : jobs.totalPeople,
+    };
+    dispatch(setJobDetails(updatedDetails));
+  };
+
   return (
     <div className="bg-[#FFFFFF] px-[32px] py-[24px] rounded-2xl shadow mb-[34px]">
       <div className=" rounded-2xl bg-[#F7F7FD] p-[18px] cursor-pointer flex justify-between border">
@@ -52,15 +65,15 @@ const JobCard = ({ jobs }) => {
             <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-8 aspect-square object-cover rounded-full border" />
           </div>
           <div className="flex flex-col gap-2">
-            <p className="text-[#020202] text-[18px] font-semibold capitalize">
-              {/* Trail Bitz Company */}
-              {jobs.title}
-            </p>
-            <p className="font-normal text-[14px] text-[#424242]">
-              {jobs.title}/{jobs.jobType}/ Lagos.
-            </p>
+            <div>
+              <p className="text-[#020202] text-[18px] font-semibold capitalize">
+                {jobs.jobPosterFirstName} {jobs.jobPosterLastName}
+              </p>
+              <p className="font-normal text-[14px] text-[#424242]">
+                {jobs.jobPosterBio}
+              </p>
+            </div>
             <p className="text-[#484851] font-normal text-[16px] truncate ... max-w-[400px]">
-              {/* {responsibilities} */}
               {jobs.jobTitle}
             </p>
           </div>
@@ -74,7 +87,7 @@ const JobCard = ({ jobs }) => {
           <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center">
             <div className="flex gap-1 items-center border-r pr-2 mr-2">
               <Image alt="like it" src={Thumbsup} className="cursor-pointer" />
-              <p className="text-[12px]">1.2k</p>
+              <p className="text-[12px]">{Number(jobs.upvotes)}</p>
             </div>
             <Image
               alt="dislike it"
@@ -88,22 +101,22 @@ const JobCard = ({ jobs }) => {
               src={Comment}
               className="cursor-pointer"
             />
-            <p className="text-[12px]">201</p>
+            <p className="text-[12px]">0</p>
           </div>
         </div>
         <div className="flex gap-[24px] items-center">
-          <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center">
-            <p className="text-[14px] font-medium">{jobs.amount}</p>
-            <span className="text-[8px] mr-1">$300</span>
+          <div className="flex border rounded-lg px-4 py-2 border-[#B6B8EC] items-center gap-2">
+            <p className="text-[15px] font-medium">{Number(jobs.amount)}</p>
+            {/* <span className="text-[8px] mr-1">$300</span> */}
             <Image
               alt="Ethereum"
               src={logo(jobs.paymentMethod)}
-              className="w-[18px]"
+              className="w-[16px]"
             />
           </div>
           <Button
             href="/dashboard/earn/job-description"
-            onClick={() => dispatch(setJobDetails(jobs))}
+            onClick={() => handleDescription()}
             outline
             name="Apply"
             className="text-[#00ADEF]"
