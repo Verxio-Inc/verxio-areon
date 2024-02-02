@@ -108,9 +108,7 @@ const Page = () => {
         const transaction = updateProfileWrite();
         // Additional logic after the transaction is submitted
         console.log("Transaction submitted:", transaction);
-
         console.log("Task upload successful!...", updateProfileData);
-
         console.log("Profile upload successful!...");
 
         setFirstName("");
