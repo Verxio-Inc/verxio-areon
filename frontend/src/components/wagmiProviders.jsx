@@ -13,7 +13,7 @@ import {
   coinbaseWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 // import { polygonZkEvm, polygonZkEvmTestnet } from "wagmi/chains";
-import { AreonTestnet } from "../app/Chain";
+import { AreonTestnet } from "./Chain";
 // import { ThirdwebProvider } from '@thirdweb-dev/react';
 
 const projectId = "274de4271228fdd69013c56274f0e688";
