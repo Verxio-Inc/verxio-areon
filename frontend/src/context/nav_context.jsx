@@ -34,6 +34,8 @@ export const NavProvider = ({ children }) => {
         setJobDetails, userProfileDetail, setUserProfileDetail,
         userProfile3,
         setUserProfile3,
+        userProfileDetail, 
+        setUserProfileDetail
       }}
     >
       {children}
