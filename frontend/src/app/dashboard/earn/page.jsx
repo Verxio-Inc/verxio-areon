@@ -8,7 +8,7 @@ import {
   useReadContract,
   useContractRead
  } from 'wagmi'
- import VerxioSubmitTaskABI from "../../../components/abi/VerxioSubmitTask.json"
+ import {VerxioSubmitTaskABI} from "../../../components/abi/VerxioSubmitTask.json"
 import { useNav } from "../../../context/nav_context";
 
 const Page = () => {
