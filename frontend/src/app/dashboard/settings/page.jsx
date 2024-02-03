@@ -136,7 +136,7 @@ const Page = () => {
     <>
       <div className="">
         <form
-          className="pt-16 flex flex-col gap-5 sm:w-[100%] px-20 border"
+          className="pt-16 flex flex-col gap-5 sm:w-[100%] px-5 sm:px-20 border"
           onSubmit={handleUpdateProfile}
         >
           <div className="flex relative justify-center -mt-24 mb-14">

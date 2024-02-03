@@ -26,8 +26,8 @@ const Sidebar = () => {
       <nav
         className={`
       ${
-        isOpen ? "translate-x-0 absolute h-full " : "max-lg:hidden"
-      } w-[340px] bg-primary z-50 h-screen `}
+        isOpen ? "translate-x-0 absolute h-full z-50" : "max-lg:hidden"
+      } w-[300px] bg-primary z-50 h-screen `}
       >
         <div className="border-b border-dashed flex justify-center items-center px-[5%]">
           <Logo className="py-12" />
@@ -40,7 +40,10 @@ const Sidebar = () => {
               // <div></div>
             ))}
           </ul>
+          <div className="flex justify-center">
+
               <Connect/>
+          </div>
           {/* {user ? <LogoutButton /> : <LoginButton />} */}
 
           <button className=" flex items-center  mx-auto w-[80%] gap-3">

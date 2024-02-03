@@ -64,34 +64,36 @@ const JobCard = ({ jobs }) => {
   };
 
   return (
-    <div className="bg-[#FFFFFF] px-[32px] py-[24px] rounded-2xl shadow mb-[34px]">
-      <div className=" rounded-2xl bg-[#F7F7FD] p-[18px] cursor-pointer flex justify-between border">
-        <div className=" flex gap-4">
-          <div>
-            <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-8 aspect-square object-cover rounded-full border" />
-            {/* <image
+    <div className="bg-[#FFFFFF] sm:px-[32px] sm:py-[24px] rounded-2xl shadow mb-[34px]">
+      <div className="rounded-2xl bg-[#F7F7FD] p-[18px] ">
+        <div className="  flex justify-between">
+          <div className=" flex gap-4">
+            <div>
+              <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-8 aspect-square object-cover rounded-full border" />
+              {/* <image
               src={jobs?.jobPosterProfileUrl}
               alt="profile image"
               width={100}
               height={100}
             /> */}
-          </div>
-          <div className="flex flex-col gap-2">
-            <div>
-              <p className="text-[#020202] text-[18px] font-semibold capitalize">
-                {jobs.jobPosterFirstName} {jobs.jobPosterLastName}
-              </p>
-              <p className="font-normal text-[14px] text-[#424242]">
-                {jobs.jobPosterBio}
-              </p>
             </div>
-            <p className="text-[#484851] font-normal text-[16px] truncate ... max-w-[400px]">
-              {jobs.jobTitle}
-            </p>
+            <div className="flex flex-col gap-2">
+              <div>
+                <p className="text-[#020202] text-[18px] font-semibold capitalize">
+                  {jobs.jobPosterFirstName} {jobs.jobPosterLastName}
+                </p>
+                <p className="font-normal text-[14px] text-[#424242]">
+                  {jobs.jobPosterBio}
+                </p>
+              </div>
+            </div>
           </div>
+          <p className="text-[#0B0B28] text-[16px] font-semibold capitalize">
+            open
+          </p>
         </div>
-        <p className="text-[#0B0B28] text-[16px] font-semibold capitalize">
-          open
+        <p className="text-[#484851] font-normal lg:truncate sm:max-w-[400px] mt-3 sm:ml-5 text-[14px]">
+          {jobs.jobTitle}
         </p>
       </div>
       <div className="flex justify-between mt-[22px] items-center">
