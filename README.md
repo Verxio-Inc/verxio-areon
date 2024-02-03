@@ -4,7 +4,7 @@
 
 Verxio is a decentralized web3 ecosystem with fair monetization of talents for their creative work and contribution while offering DAOs access to a talent pool of creatives to execute their projects.
 
-Verxio allows DAOs to post job openings, gigs, quests, and bounties on the platform while top talent across the globe can apply for those opportunities to be paid without restriction.
+Verxio allows crypto founders and DAOs access to our global talent pool allowing them to post job openings, gigs, quests, and bounties on the platform while these top talents can apply for these opportunities to be paid without restriction.
 
 
 ## Explore Verxio's Three Pillars:
