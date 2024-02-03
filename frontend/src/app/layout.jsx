@@ -20,7 +20,10 @@ export default async function RootLayout({ children }) {
   // const session = await getServerSession(authOptions);
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-inter`}>
+      <body 
+      className={`${inter.variable} font-inter`}
+      suppressHydrationWarning={true}
+      >
         <NavProvider>
           <ReduxProvider>
             <WagmiProviders>
