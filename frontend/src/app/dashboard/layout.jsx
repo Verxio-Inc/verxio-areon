@@ -1,6 +1,6 @@
 import { NavProvider } from "../../context/nav_context";
 import { Sidebar } from "../../components";
-import Header from "../../components/Header";
+import Header from '../../components/Header'
 
 export const metadata = {
   title: "Dashboard | Verxio Protocol",
