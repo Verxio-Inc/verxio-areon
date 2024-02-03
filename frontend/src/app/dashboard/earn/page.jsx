@@ -57,8 +57,8 @@ const Page = () => {
         <h2 className="text-primary text-[28px] font-semibold mb-[32px] capitalize">
           Welcome back {userProfileDetail?.firstName}
         </h2>
-        {data?.map((item) => (
-          <JobCard key={item.key} jobs={item} />
+        {data?.slice().reverse().map((item) => (
+          <JobCard key={item.taskId} jobs={item} />
         ))}
       </div>
     </>
