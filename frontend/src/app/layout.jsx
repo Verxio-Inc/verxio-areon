@@ -1,9 +1,11 @@
 import "./globals.css";
-import { Lato, Poppins, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import ReduxProvider from "../components/reduxProvider";
 import { NavProvider } from "../context/nav_context";
 import WagmiProviders from "../components/wagmiProviders";
+// import { ThemeProvider } from "@mui/material/styles";
+// import theme from "../../theme";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,14 +22,17 @@ export default async function RootLayout({ children }) {
   // const session = await getServerSession(authOptions);
   return (
     <html lang="en">
-      <body 
-      className={`${inter.variable} font-inter`}
-      suppressHydrationWarning={true}
+      <body
+        className={`${inter.variable} font-inter`}
+        suppressHydrationWarning={true}
       >
         <NavProvider>
           <ReduxProvider>
             <WagmiProviders>
-              <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+              <AppRouterCacheProvider>
+                {/* <ThemeProvider theme={theme}>{children}</ThemeProvider> */}
+                {children}
+              </AppRouterCacheProvider>
             </WagmiProviders>
           </ReduxProvider>
         </NavProvider>

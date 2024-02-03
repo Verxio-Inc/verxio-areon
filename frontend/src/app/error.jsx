@@ -4,7 +4,7 @@ import Button from "../components/Button";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const Error = () => {
+const Error = ({reset}) => {
   const router = useRouter();
   const handleGoBack = () => {
     router.back();
