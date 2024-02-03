@@ -48,7 +48,7 @@ const Page = () => {
     e.preventDefault();
 
     try {
-      const transaction = submitTaskWrite(); 
+      const transaction = submitTaskWrite();
       // Now you can perform additional submit logic, e.g., send data to the server
     } catch (error) {
       console.error("File Error:", error);

@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-import LoginButton from "./login";
-import LogoutButton from "./logout";
 import Connect from "./connect"
 import { useEffect, useState } from "react";
 import { Logo, SidebarMenuItem } from "./atoms";
@@ -13,7 +11,7 @@ import { getAccount } from '@wagmi/core'
 
 const Sidebar = () => {
 
-  const { isOpen, toggleNav, user, setUser } = useNav();
+  const { isOpen, setUser } = useNav();
 
   useEffect(() => {
     const user = getAccount();
