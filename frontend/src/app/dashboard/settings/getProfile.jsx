@@ -19,12 +19,12 @@ const GetProfile = () => {
     functionName: "getProfile",
     args: [userAddress],
     watch: true,
-    onSuccess(data) {
-      console.log("Success: UserProfile", data);
-    },
-    onError(error) {
-      console.log("Error", error);
-    },
+    // onSuccess(data) {
+    //   console.log("Success: UserProfile", data);
+    // },
+    // onError(error) {
+    //   console.log("Error", error);
+    // },
   });
 
   return (

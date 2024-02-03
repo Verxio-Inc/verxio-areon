@@ -28,10 +28,10 @@ const Page = () => {
 
   const user = getAccount();
   const userAddress = user.address;
-
+  contractAddress = "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe"
   // Gets UserProfile
   const { data: userProfile } = useContractRead({
-    address: "0x4838854e5150e4345fb4ae837e9fcca40d51f3fe",
+    address: contractAddress,
     abi: VerxioUserProfileABI,
     functionName: "getProfile",
     args: [userAddress],
