@@ -17,8 +17,8 @@ const Page = () => {
   const { userProfileDetail, setUserProfileDetail } = useNav();
   const [userAddress, setUserAddress] = useState("");
 
+  const user = getAccount();
   useEffect(() => {
-    const user = getAccount();
     setUserAddress(user.address);
   }, []);
 
@@ -47,9 +47,9 @@ const Page = () => {
 
   useEffect(() => {
     setUserProfileDetail(userProfile);
-  }, [ setUserProfileDetail, userProfile]);
+  }, [userProfile]);
 
-  console.log("Showing user profile: ", userProfileDetail);
+  // console.log("Showing user profile: ", userProfileDetail);
 
   return (
     <>
@@ -57,8 +57,8 @@ const Page = () => {
         <h2 className="text-primary text-[28px] font-semibold mb-[32px] capitalize">
           Welcome back {userProfileDetail?.firstName}
         </h2>
-        {data?.map((item) => (
-          <JobCard key={item.key} jobs={item} />
+        {data?.map((item, index) => (
+          <JobCard key={item.taskId} jobs={item} />
         ))}
       </div>
     </>
