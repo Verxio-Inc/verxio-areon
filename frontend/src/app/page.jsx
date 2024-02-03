@@ -1,7 +1,24 @@
-"use client";
-import { permanentRedirect } from "next/navigation";
-import { useNav } from "../context/nav_context";
+// import { permanentRedirect } from "next/navigation";
 
-export default function Profile() {
-  permanentRedirect("/dashboard/earn");
-}
+// export default function Profile() {
+//   // permanentRedirect("/dashboard/earn");
+//   <div className="border bg-red-300">
+//     <p>Hello</p>
+//   </div>
+// }
+
+import Link from "next/link";
+import React from "react";
+
+const page = () => {
+  return (
+    <div className="border bg-red-300">
+      <p>Hello</p>
+      <Link href='/dashboard'>
+        go to dashboard
+      </Link>
+    </div>
+  );
+};
+
+export default page;

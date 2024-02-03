@@ -20,10 +20,8 @@ const Error = ({
       </h1>
       <p>We are working to fix this.</p>
       <div className="flex gap-4 items-center mt-6">
-        <Button outline onClick={reset}>
-          <span className="text-black">Try again</span>
-        </Button>
-        <Button onClick={handleGoBack}>Go back</Button>
+        <Button outline onClick={reset} name='Try again'/>
+        <Button onClick={handleGoBack} name='Go back'/>
       </div>
     </section>
   );
