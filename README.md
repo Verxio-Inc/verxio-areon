@@ -13,6 +13,8 @@ Verxio allows DAOs to post job openings, gigs, quests, and bounties on the platf
 Verxio Earn is a platform where crypto founders, DAOs and organizations meet and interact with world-class talents to get things done faster
 Embark on a journey into the future of work, creating opportunities for all by partnering with web3 organizations who post opportunities while a community of talent can apply for those opportunities
 
+![Verxio Earn Dashboard](https://github.com/Verxio-Inc/verxio-areon/blob/main/frontend/src/assets/verxio-dashboard.png)
+
 ### Verxio Learn
 Discover a decentralized learning platform that transforms skill development. Users can learn about new protocols, and skills and solve quizzes and tasks to get paid with Verxio Learn and earn
 
