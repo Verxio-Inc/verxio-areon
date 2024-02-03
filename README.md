@@ -1,5 +1,7 @@
 # Verxio: Connecting Talents with Global Opportunities
 
+![Verxio Information Architecture](https://github.com/Verxio-Inc/verxio-areon/blob/main/frontend/src/assets/information%20Architecture.png)
+
 Verxio is a decentralized web3 ecosystem with fair monetization of talents for their creative work and contribution while offering DAOs access to a talent pool of creatives to execute their projects.
 
 Verxio allows DAOs to post job openings, gigs, quests, and bounties on the platform while top talent across the globe can apply for those opportunities to be paid without restriction.
