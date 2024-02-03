@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { permanentRedirect } from "next/navigation";
+import React from "react";
+// import { permanentRedirect } from "next/navigation";
 
 const page = () => {
   return (

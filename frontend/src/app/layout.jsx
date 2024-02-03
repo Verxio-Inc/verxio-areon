@@ -26,7 +26,7 @@ export default async function RootLayout({ children }) {
         className={`${inter.variable} font-inter`}
         suppressHydrationWarning={true}
       >
-        <NavProvider>
+        {/* <NavProvider> */}
           <ReduxProvider>
             <WagmiProviders>
               <AppRouterCacheProvider>
@@ -35,7 +35,7 @@ export default async function RootLayout({ children }) {
               </AppRouterCacheProvider>
             </WagmiProviders>
           </ReduxProvider>
-        </NavProvider>
+        {/* </NavProvider> */}
       </body>
     </html>
   );
