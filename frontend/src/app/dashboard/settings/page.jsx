@@ -7,18 +7,14 @@ import Image from "next/image";
 import {
   useContractWrite,
   usePrepareContractWrite,
-  useWaitForTransaction,
   useContractRead,
 } from "wagmi";
-import  VerxioUserProfileABI from "../../../components/abi/VerxioUserProfile.json";
+import  { VerxioUserProfileABI } from "../../../components/abi/VerxioUserProfile.json";
 import { getAccount } from "@wagmi/core";
 import { faker } from '@faker-js/faker';
 
 const Page = () => {
   const { userProfileDetail, setUserProfileDetail } = useNav();
-
-
-
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(userProfileDetail?.profilePictureUrl);
   const fileInputRef = useRef(null);
@@ -41,14 +37,14 @@ const Page = () => {
     args: [userAddress],
 
     
-    watch: true,
-    onSuccess(data) {
-      console.log("Success: UserProfile", data);
+    // watch: true,
+    // onSuccess(data) {
+    //   console.log("Success: UserProfile", data);
 
-    },
-    onError(error) {
-      console.log("Error", error);
-    },
+    // },
+    // onError(error) {
+    //   console.log("Error", error);
+    // },
   });
 
   setUserProfileDetail(userProfile)
