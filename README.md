@@ -46,7 +46,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - Verxio DAO Governance Contract Address: 0x787b42fa61f11ce130c40d489a00c56a8f5d335f 
 
-### Demo Video: https://youtu.be/zjrQdH2444c?si=3K6LoPBfqxVfuH62
+### Demo Video: https://youtu.be/4DIK-1A9sJ0?si=Xg5sBMVG4F0DW1AT
 ### Demo URL: https://verxio-areon.vercel.app/
 ## Conclusion
 Join us on the journey as we continue building and iterating, with the sole purpose of making Verxio an invaluable asset for our users.
